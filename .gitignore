@@ -1,0 +1,24 @@
+*.iml
+.gradle/
+/local.properties
+local.properties
+.idea/
+/build
+build/
+/captures
+.externalNativeBuild
+.cxx
+*.keystore
+*.jks
+
+# 로컬 로그/임시 파일
+*.log
+*.txt
+temp/
+
+# macOS metadata
+.DS_Store
+._*
+**/.DS_Store
+**/.AppleDouble
+**/.LSOverride
