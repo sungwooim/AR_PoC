@@ -19,6 +19,82 @@ object Strings {
     fun getSuggestedQuestions(lang: String): List<String> =
         suggestedQuestionsMap[lang] ?: suggestedQuestionsMap["ko"]!!
 
+    // 전각별 특화 추천 질문 (공통 질문에 추가로 표시)
+    private val heritageSuggestedQuestions = mapOf(
+        "geunjeongjeon" to mapOf(
+            "ko" to listOf("칠조룡은 왜 7발톱인가요?", "박석은 왜 울퉁불퉁한가요?"),
+            "en" to listOf("Why does the dragon have 7 claws?", "Why are the floor stones rough?"),
+            "ja" to listOf("七爪竜はなぜ7つの爪なのですか？", "床石はなぜ凸凹しているのですか？"),
+            "zh" to listOf("七爪龙为什么有7个爪子？", "地石为什么凹凸不平？")
+        ),
+        "gyeonghoeru" to mapOf(
+            "ko" to listOf("기둥이 왜 원형과 사각형인가요?", "연못에서 발견된 것은 무엇인가요?"),
+            "en" to listOf("Why are the pillars round and square?", "What was found in the pond?"),
+            "ja" to listOf("柱はなぜ円形と四角形なのですか？", "池から発見されたものは何ですか？"),
+            "zh" to listOf("柱子为什么有圆形和方形？", "池塘里发现了什么？")
+        ),
+        "gwanghwamun" to mapOf(
+            "ko" to listOf("해태는 어떤 동물인가요?", "수문장 교대식은 언제 볼 수 있나요?"),
+            "en" to listOf("What kind of creature is the Haetae?", "When can I see the guard ceremony?"),
+            "ja" to listOf("ヘテはどんな動物ですか？", "守門将交代式はいつ見られますか？"),
+            "zh" to listOf("獬豸是什么动物？", "换岗仪式什么时候举行？")
+        ),
+        "sajeongjeon" to mapOf(
+            "ko" to listOf("세종대왕은 여기서 무엇을 했나요?", "경연은 어떤 행사인가요?"),
+            "en" to listOf("What did King Sejong do here?", "What is Gyeongyeon?"),
+            "ja" to listOf("世宗大王はここで何をしましたか？", "経筵とはどんな行事ですか？"),
+            "zh" to listOf("世宗大王在这里做了什么？", "经筵是什么活动？")
+        ),
+        "gangnyeongjeon" to mapOf(
+            "ko" to listOf("왜 용마루가 없나요?", "몇 번이나 불에 탔나요?"),
+            "en" to listOf("Why is there no roof ridge?", "How many times did it burn?"),
+            "ja" to listOf("なぜ龍棟がないのですか？", "何度焼失しましたか？"),
+            "zh" to listOf("为什么没有正脊？", "被烧了几次？")
+        ),
+        "gyotaejeon" to mapOf(
+            "ko" to listOf("아미산 굴뚝은 왜 유명한가요?", "왕비의 하루는 어땠나요?"),
+            "en" to listOf("Why are the Amisan chimneys famous?", "What was the queen's daily life like?"),
+            "ja" to listOf("峨嵋山の煙突はなぜ有名ですか？", "王妃の一日はどうでしたか？"),
+            "zh" to listOf("峨眉山烟囱为什么有名？", "王妃的一天是怎样的？")
+        ),
+        "jagyeongjeon" to mapOf(
+            "ko" to listOf("십장생은 무엇인가요?", "꽃담에 어떤 문양이 있나요?"),
+            "en" to listOf("What are the Ten Longevity Symbols?", "What patterns are on the flower walls?"),
+            "ja" to listOf("十長生とは何ですか？", "花塀にはどんな文様がありますか？"),
+            "zh" to listOf("十长生是什么？", "花墙上有什么纹样？")
+        ),
+        "hyangwonjeong" to mapOf(
+            "ko" to listOf("취향교가 왜 북쪽으로 옮겨졌나요?", "가장 아름다운 계절은 언제인가요?"),
+            "en" to listOf("Why was the bridge moved north?", "Which season is the most beautiful?"),
+            "ja" to listOf("醉香橋はなぜ北に移されたのですか？", "最も美しい季節はいつですか？"),
+            "zh" to listOf("醉香桥为什么移到了北侧？", "最美的季节是什么时候？")
+        ),
+        "geoncheongung" to mapOf(
+            "ko" to listOf("을미사변이 무엇인가요?", "한국 최초의 전등은 어떤 것이었나요?"),
+            "en" to listOf("What was the Eulmi Incident?", "What were Korea's first electric lights like?"),
+            "ja" to listOf("乙未事変とは何ですか？", "韓国初の電灯はどんなものでしたか？"),
+            "zh" to listOf("乙未事变是什么？", "韩国最早的电灯是什么样的？")
+        ),
+        "jibokjae" to mapOf(
+            "ko" to listOf("왜 중국식으로 지었나요?", "고종은 어떤 책을 읽었나요?"),
+            "en" to listOf("Why was it built in Chinese style?", "What books did King Gojong read?"),
+            "ja" to listOf("なぜ中国式で建てたのですか？", "高宗はどんな本を読みましたか？"),
+            "zh" to listOf("为什么建成中国式？", "高宗读了什么书？")
+        ),
+        "donggung" to mapOf(
+            "ko" to listOf("세자의 하루 일과는 어땠나요?", "서연은 무엇인가요?"),
+            "en" to listOf("What was the crown prince's daily life like?", "What is Seoyeon?"),
+            "ja" to listOf("世子の一日の日課はどうでしたか？", "書筵とは何ですか？"),
+            "zh" to listOf("世子的一天是怎样的？", "书筵是什么？")
+        )
+    )
+
+    fun getHeritageSuggestedQuestions(heritageId: String, lang: String): List<String> {
+        val specific = heritageSuggestedQuestions[heritageId]?.get(lang) ?: emptyList()
+        val common = getSuggestedQuestions(lang)
+        return (specific + common).distinct()
+    }
+
     // ──────────────────────────────────────────────
     // 2. Palace Names (궁궐 이름)
     // ──────────────────────────────────────────────
@@ -36,6 +112,90 @@ object Strings {
             "zh" to "景福宫"
         ),
         "gwanghwamun" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "sajeongjeon" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "sujeongjeon" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "gangnyeongjeon" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "gyotaejeon" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "jagyeongjeon" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "hyangwonjeong" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "geoncheongung" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "jibokjae" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "donggung" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "taeweonjeon" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "sojubang" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "heungbokjeon" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "geunjeongmun" to mapOf(
+            "ko" to "경복궁 (Gyeongbokgung)",
+            "en" to "Gyeongbokgung Palace",
+            "ja" to "景福宮（キョンボックン）",
+            "zh" to "景福宫"
+        ),
+        "yeongjeogyo" to mapOf(
             "ko" to "경복궁 (Gyeongbokgung)",
             "en" to "Gyeongbokgung Palace",
             "ja" to "景福宮（キョンボックン）",
