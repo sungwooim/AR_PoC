@@ -11,12 +11,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ar_poc.Strings
 import com.example.ar_poc.domain.repository.HeritageRepository
+import com.example.ar_poc.ui.components.AssetImage
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -118,6 +120,19 @@ fun DetailScreen(
                 if (isLoading) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // 전각 대표 이미지 (assets에 있으면 표시)
+                originalContent.coverImageAsset?.takeIf { it.isNotBlank() }?.let { path ->
+                    AssetImage(
+                        assetPath = path,
+                        contentDescription = title,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(220.dp)
+                            .padding(bottom = 16.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                    )
                 }
 
                 Text(

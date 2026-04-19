@@ -147,7 +147,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("large bronze cauldron in palace courtyard", "massive metal water vat near building", "wide iron pot on stone base for fire prevention"),
                     linkedChunkId = "geun_02"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/geunjeongjeon_cover.jpg"
         ),
         HeritageContent(
             id = "gyeonghoeru",
@@ -273,7 +274,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("cylindrical round stone column supporting pavilion", "smooth circular stone pillars under pavilion", "round column standing on stone base"),
                     linkedChunkId = "gy_02"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/gyeonghoeru_cover.jpg"
         ),
         HeritageContent(
             id = "gwanghwamun",
@@ -405,7 +407,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("royal guard ceremony in traditional costume", "soldiers in colorful Joseon dynasty uniforms", "guard changing ceremony with flags and weapons"),
                     linkedChunkId = "gw_03"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/gwanghwamun_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -529,7 +532,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("smaller palace building flanking east side of main hall", "auxiliary wooden hall with traditional roof", "side pavilion connected to main hall by corridor"),
                     linkedChunkId = "saj_02"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/sajeongjeon_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -647,7 +651,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("long covered wooden corridor connecting palace buildings", "traditional korean walkway with tiled roof connecting halls", "wooden corridor along the western side of palace courtyard"),
                     linkedChunkId = "suj_02"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/sujeongjeon_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -771,7 +776,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("stone furnace opening at base of palace wall", "traditional underfloor heating hole in stone foundation", "small arched opening in building foundation for fire"),
                     linkedChunkId = "gang_02"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/gangnyeongjeon_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -901,7 +907,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("palace wall decorated with floral brick patterns", "traditional korean wall with embedded flower designs", "ornamental wall with plum blossom motifs near chimney"),
                     linkedChunkId = "gyo_03"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/gyotaejeon_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1025,7 +1032,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("large wooden sign with korean characters on L-shaped palace hall", "palace name plaque on queen dowager's residence", "nameplate on traditional korean palace building"),
                     linkedChunkId = "jag_01"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/jagyeongjeon_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1143,7 +1151,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("large palace pond with hexagonal pavilion in center", "lotus pond reflecting pavilion and sky", "rectangular pond surrounding island with pavilion"),
                     linkedChunkId = "hyang_03"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/hyangwonjeong_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1267,7 +1276,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("palace name plaque on rear garden palace complex", "wooden sign with Korean characters on king's private palace", "nameplate on palace within palace compound"),
                     linkedChunkId = "geon_01"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/geoncheongung_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1391,7 +1401,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("glass windows on traditional wooden palace building", "modern glass panes in Chinese-style palace structure", "transparent windows unusual for traditional palace architecture"),
                     linkedChunkId = "jib_03"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/jibokjae_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1509,7 +1520,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("informational sign describing crown prince palace area", "heritage explanation board with historical photos", "cultural heritage information panel in palace grounds"),
                     linkedChunkId = "dong_01"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/donggung_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1602,7 +1614,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("palace name plaque on solemn ceremonial hall", "wooden sign on restrained decoration palace building", "nameplate on western palace hall"),
                     linkedChunkId = "tae_01"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/taeweonjeon_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1762,7 +1775,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     )
                 )
             ),
-            subElements = emptyList()
+            subElements = emptyList(),
+            coverImageAsset = "heritage/heungbokjeon_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════
@@ -1842,7 +1856,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     visualHints = listOf("three stone paths leading through palace courtyard", "central raised stone walkway flanked by two lower paths", "stone road divided into three sections in palace grounds"),
                     linkedChunkId = "gmun_01"
                 )
-            )
+            ),
+            coverImageAsset = "heritage/geunjeongmun_cover.jpg"
         ),
 
         // ═══════════════════════════════════════════════════════════════

@@ -17,7 +17,13 @@ data class HeritageContent(
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,
     /** Visually recognisable sub-elements within / on this building. */
-    val subElements: List<SubElement> = emptyList()
+    val subElements: List<SubElement> = emptyList(),
+    /**
+     * 대표 이미지 asset 경로 (상대).
+     * 예: "heritage/geunjeongjeon_cover.jpg" → app/src/main/assets/heritage/geunjeongjeon_cover.jpg
+     * null 또는 공백이면 이미지 없음 — DetailScreen은 플레이스홀더 표시.
+     */
+    val coverImageAsset: String? = null
 )
 
 data class HeritageChunk(

@@ -13,8 +13,24 @@ build/
 
 # 로컬 로그/임시 파일
 *.log
-*.txt
+build_*.txt
+compile_*.txt
+output*.log
 temp/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+*.egg-info/
+
+# ChromaDB 로컬 인덱스 (빌드 가능, 커밋 불필요)
+.chroma/
+
+# PDF 추출 산출물 (재생성 가능, 450MB 이미지는 커밋 금지)
+dataset/extracted/images/
+dataset/extracted/heritage_pdf_data.json
 
 # macOS metadata
 .DS_Store

@@ -5,6 +5,8 @@ Android LocalHeritageKnowledgeSource의 핵심 데이터를 서버에 미러링.
 실제 운영에서는 DB(PostgreSQL 등)로 교체한다.
 """
 
+from __future__ import annotations
+
 from models import ChunkData, HeritageData
 
 # ── 근정전 청크 ─────────────────────────────────────────

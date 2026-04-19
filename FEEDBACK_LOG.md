@@ -195,6 +195,29 @@
 - **수정**: SpatialCalculator / LocalHeritageKnowledgeSource / RuleRetriever / QuizRepository 테스트 총 37개 추가
 - **규칙 승격**: ✅ AGENTS.md 체크리스트: "데이터 추가 시 대응 테스트 업데이트" 추가
 
+## 2026-04-19 세션 2 기록
+
+### [2026-04-19] macOS HFS 파일명 NFD 유니코드 정규화 문제
+- **발견 위치**: scripts/extract_pdfs.py (한글 포함 PDF 파일명 매칭)
+- **패턴**: macOS 파일시스템에서 한글 파일명이 NFD 형태로 저장되어 `re.search('경복궁', name)`가 실패
+- **원인**: Python은 NFC 문자열로 패턴 매칭하지만 HFS+는 NFD 분해 형태 저장
+- **수정**: `unicodedata.normalize('NFC', filename)` 선처리 후 매칭
+- **규칙 승격**: ✅ 스크립트에 "macOS 한글 파일명 처리 시 NFC 정규화 필수" 주석 추가
+
+### [2026-04-19] Python 3.9에서 `str | None` 새 유니온 문법 미지원
+- **발견 위치**: services/agent-retrieval/knowledge.py, models.py
+- **패턴**: `HeritageData | None` 타입 힌트가 Python 3.10+ 문법이라 3.9에서 TypeError
+- **원인**: PEP 604 union syntax는 3.10부터 런타임 평가 지원. Pydantic은 런타임 평가 필요
+- **수정**: `from __future__ import annotations` 추가 + `eval_type_backport` 설치로 Pydantic 보완
+- **규칙 승격**: 미반영 (환경 의존, 프로덕션에서는 Python 3.10+ 사용 권장)
+
+### [2026-04-19] material-icons-extended 없이 이미지 로딩 해결
+- **발견 위치**: DetailScreen 이미지 표시 요구사항
+- **패턴**: Coil/Glide 같은 외부 라이브러리 없이도 assets 이미지 로딩 필요
+- **원인**: 프로젝트 원칙 — 외부 의존성 최소화
+- **수정**: BitmapFactory + LaunchedEffect로 커스텀 AssetImage Composable 작성. inSampleSize로 메모리 절감
+- **규칙 승격**: ✅ CLAUDE.md "외부 라이브러리 전 로컬 BitmapFactory 검토" 패턴 추가 권고
+
 ---
 
 ## 패턴 통계
