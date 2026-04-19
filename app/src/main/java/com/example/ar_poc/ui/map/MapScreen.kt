@@ -184,8 +184,28 @@ fun MapScreen(
                 }
             }
 
-            // ── POI 마커 ─────────────────────────────────────────────────
-            poiList.forEach { poi ->
+            // ── POI 마커 (코스 선택 시 필터링) ─────────────────────────────
+            // 코스 선택 시:
+            //  - 코스 경로상 정지점은 CourseWaypointMarker로 번호 배지 렌더링됨 → 중복 방지
+            //  - 카페/안내/기념품점/포토스팟 같은 편의 시설만 추가로 노출
+            // 코스 미선택 시: 기존대로 모든 POI 노출
+            val courseStopIds: Set<String> = selectedCourse
+                ?.stops
+                ?.mapNotNull { it.targetId }
+                ?.toSet()
+                .orEmpty()
+            val facilityTypes = setOf(
+                PoiType.CAFE, PoiType.SHOP, PoiType.INFO, PoiType.VIEWPOINT
+            )
+            val visiblePois = if (selectedCourse != null) {
+                poiList.filter { poi ->
+                    poi.type in facilityTypes && poi.id !in courseStopIds
+                }
+            } else {
+                poiList
+            }
+
+            visiblePois.forEach { poi ->
                 if (poi.latitude != 0.0 && poi.longitude != 0.0) {
                     val isHeritage = poi.linkedHeritage != null
                     val isDiscovered = discoveredHeritages.contains(poi.id)
@@ -296,13 +316,31 @@ fun MapScreen(
                             else             -> when(targetLanguage) { "en" -> "↖ NW"; "ja" -> "↖ 北西"; "zh" -> "↖ 西北"; else -> "↖ 북서" }
                         }
                         Text(dirLabel, fontSize = 11.sp, color = Color(0xFF1565C0), fontWeight = FontWeight.Bold)
-                        val heritageOnlyCount = poiList.count { it.latitude != 0.0 && it.linkedHeritage != null }
-                        Text("🔴 ${when(targetLanguage){"en"->"Heritage";"ja"->"文化財";"zh"->"文物";else->"유산"}}",
-                            fontSize = 11.sp, color = Color(0xFF880000))
-                        Text("🔵 ${when(targetLanguage){"en"->"Facility";"ja"->"施設";"zh"->"设施";else->"시설"}}",
-                            fontSize = 11.sp, color = Color(0xFF1565C0))
-                        Text("${discoveredHeritages.size}/$heritageOnlyCount ✨",
-                            fontSize = 11.sp, color = Color(0xFF666666))
+                        if (selectedCourse != null) {
+                            // 코스 선택 시: 진행률만 간결하게 표시
+                            val stopCount = selectedCourse.stops.size
+                            val visitedCount = visitedOrders.count { o -> selectedCourse.stops.any { it.order == o } }
+                            Text(
+                                text = "🗺️ ${selectedCourse.localizedName(targetLanguage)}",
+                                fontSize = 11.sp,
+                                color = Color(0xFFB8860B),
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "$visitedCount/$stopCount ✓",
+                                fontSize = 11.sp,
+                                color = Color(0xFF2E7D32),
+                                fontWeight = FontWeight.Bold
+                            )
+                        } else {
+                            val heritageOnlyCount = poiList.count { it.latitude != 0.0 && it.linkedHeritage != null }
+                            Text("🔴 ${when(targetLanguage){"en"->"Heritage";"ja"->"文化財";"zh"->"文物";else->"유산"}}",
+                                fontSize = 11.sp, color = Color(0xFF880000))
+                            Text("🔵 ${when(targetLanguage){"en"->"Facility";"ja"->"施設";"zh"->"设施";else->"시설"}}",
+                                fontSize = 11.sp, color = Color(0xFF1565C0))
+                            Text("${discoveredHeritages.size}/$heritageOnlyCount ✨",
+                                fontSize = 11.sp, color = Color(0xFF666666))
+                        }
                     }
                 }
                 IconButton(onClick = onClose) {
