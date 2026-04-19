@@ -315,7 +315,15 @@ fun MapScreen(
                         state = MarkerState(position = LatLng(wp.latitude, wp.longitude)),
                         onClick = {
                             val hid = wp.heritageId
-                            if (hid != null) onNavigateToDetail(hid, null)
+                            val pid = wp.poiId
+                            when {
+                                hid != null -> onNavigateToDetail(hid, null)
+                                pid != null -> {
+                                    // POI 상세: poiList에서 찾아서 PoiInfoDialog 표시
+                                    val poi = poiList.find { it.id == pid }
+                                    if (poi != null) selectedInfoPoi = poi
+                                }
+                            }
                             true
                         },
                         zIndex = 8f

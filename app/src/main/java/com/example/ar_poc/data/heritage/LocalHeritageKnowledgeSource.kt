@@ -2058,16 +2058,16 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
             ),
             aliases = listOf("흥복전", "Heungbokjeon", "Heungbokjeon Hall", "興福殿"),
             palace = "경복궁 (Gyeongbokgung)",
-            zone = "east_court",
-            shortDescription = "근정전 동쪽에 위치한 보조 전각으로, 현재 국립고궁박물관 부지에 그 터가 남아 있습니다.",
+            zone = "inner_court",
+            shortDescription = "경복궁 북서부에 위치한 전각으로, 2019년 복원되어 현재 전시·행사 공간으로 활용됩니다.",
             shortDescMap = mapOf(
-                "ko" to "근정전 동쪽에 위치한 보조 전각으로, 현재 국립고궁박물관 부지에 그 터가 남아 있습니다.",
-                "en" to "An auxiliary hall east of Geunjeongjeon, its former site now occupied by the National Palace Museum of Korea.",
-                "ja" to "勤政殿の東側に位置する補助殿閣で、現在は国立古宮博物館の敷地にその跡が残っています。",
-                "zh" to "位于勤政殿东侧的辅助殿阁，其旧址现为国立故宫博物馆所在地。"
+                "ko" to "경복궁 북서부에 위치한 전각으로, 2019년 복원되어 현재 전시·행사 공간으로 활용됩니다.",
+                "en" to "A hall in the northwest of Gyeongbokgung, restored in 2019 and now used as an exhibition and event space.",
+                "ja" to "景福宮の北西部に位置する殿閣で、2019年に復元され現在は展示・行事空間として活用されています。",
+                "zh" to "位于景福宫西北部的殿阁，2019年复原，目前用作展览和活动空间。"
             ),
-            latitude = 37.5793,
-            longitude = 126.9778,
+            latitude = 37.5815,
+            longitude = 126.9762,
             chunks = listOf(
                 HeritageChunk(
                     chunkId = "heungbokjeon_pdf_official",
@@ -2473,6 +2473,28 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
             ),
             latitude = 37.5825,
             longitude = 126.9765
+        ),
+
+        // ── 함화당·집경당 (90분 코스 11번) ─────────────────────
+        Poi(
+            id = "hamhwadang_jipgyeongdang",
+            type = PoiType.HERITAGE,
+            title = "함화당·집경당",
+            titleMap = mapOf(
+                "ko" to "함화당·집경당",
+                "en" to "Hamhwadang & Jipgyeongdang",
+                "ja" to "咸和堂・緝敬堂",
+                "zh" to "咸和堂·缉敬堂"
+            ),
+            latitude = 37.5818,
+            longitude = 126.9768,
+            imageAsset = "heritage/poi_hamhwadang_cover.jpg",
+            descriptionMap = mapOf(
+                "ko" to "함화당과 집경당은 1890년(고종 27)에 지은 건물로, 함화당은 고종의 침전, 집경당은 경서를 읽던 공간으로 사용되었습니다. 두 건물은 복도로 연결되어 있으며 일제강점기에도 철거되지 않고 남아 있는 귀한 유산입니다.",
+                "en" to "Built in 1890 during King Gojong's reign. Hamhwadang was the king's bedchamber, while Jipgyeongdang was used for reading Confucian classics. The two buildings are connected by a corridor and survived the Japanese colonial period.",
+                "ja" to "1890年（高宗27）に建てられた建物で、咸和堂は高宗の寝殿、緝敬堂は経書を読む空間として使われました。2棟は回廊で繋がっており、日本統治時代にも撤去されずに残った貴重な遺産です。",
+                "zh" to "1890年（高宗27年）所建。咸和堂是高宗的寝殿，缉敬堂用于研读经书。两座建筑由走廊相连，日据时期未被拆除，是珍贵的遗产。"
+            )
         )
     )
 

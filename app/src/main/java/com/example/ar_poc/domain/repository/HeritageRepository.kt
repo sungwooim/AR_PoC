@@ -40,7 +40,12 @@ class HeritageRepository(
                 "yeongjeogyo" -> PoiType.VIEWPOINT
                 else -> PoiType.HERITAGE
             }
-            heritage.toPoi(type)
+            val basePoi = heritage.toPoi(type)
+            // 경회루는 연못 중앙이 아닌 동쪽 조용한 누각 시야 지점에 마커 표시.
+            // Recognition은 기존 heritage 좌표(pavilion 중앙) 그대로 사용해 정확도 유지.
+            if (heritage.id == "gyeonghoeru") {
+                basePoi.copy(latitude = 37.5800, longitude = 126.9755)
+            } else basePoi
         }
         val extraPois = knowledgeSource.getExtraPoiList()
         return heritagePois + extraPois

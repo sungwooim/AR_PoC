@@ -36,13 +36,14 @@ class TourCourseRepositoryTest {
     }
 
     @Test
-    fun `every course has at least 5 stops`() {
-        repo.getCourses().forEach { course ->
-            assertTrue(
-                "${course.id} should have >=5 stops, has ${course.stops.size}",
-                course.stops.size >= 5
-            )
-        }
+    fun `course stop counts match user specification`() {
+        // 사용자 지정 고정 카운트:
+        //   40분 = 4곳 (근정전, 수정전, 경회루, 사정전)
+        //   60분 = 10곳
+        //   90분 = 14곳 (향원정·건청궁은 하나의 stop으로 합쳐짐)
+        assertEquals(4, repo.getCourseById("course_40")!!.stops.size)
+        assertEquals(10, repo.getCourseById("course_60")!!.stops.size)
+        assertEquals(14, repo.getCourseById("course_90")!!.stops.size)
     }
 
     @Test
@@ -108,10 +109,13 @@ class TourCourseRepositoryTest {
 
     @Test
     fun `approxDistance is within reasonable bounds for each course`() {
-        // 총 이동 거리 sanity check (너무 짧거나 너무 길면 데이터 오류)
-        assertTrue(repo.getCourseById("course_40")!!.approxDistanceM in 500..1500)
-        assertTrue(repo.getCourseById("course_60")!!.approxDistanceM in 1000..2500)
-        assertTrue(repo.getCourseById("course_90")!!.approxDistanceM in 2000..4000)
+        // 경복궁 내부는 400m × 500m 규모. 코스별 사용자 지정 stop 수와 동선에 맞춰:
+        //   40분(4곳): 300~800m
+        //   60분(10곳, 동궁까지): 800~1800m
+        //   90분(14곳, 후원 포함): 1500~3500m
+        assertTrue(repo.getCourseById("course_40")!!.approxDistanceM in 300..800)
+        assertTrue(repo.getCourseById("course_60")!!.approxDistanceM in 800..1800)
+        assertTrue(repo.getCourseById("course_90")!!.approxDistanceM in 1500..3500)
     }
 
     @Test
