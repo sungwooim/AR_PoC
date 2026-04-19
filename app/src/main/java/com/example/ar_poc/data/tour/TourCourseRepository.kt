@@ -53,6 +53,7 @@ class TourCourseRepository @Inject constructor() {
 
         // ═══════════════════════════════════════════════════════════════
         // 60분 코스 — 경회루 포함 주요 전각
+        // 경회루는 연못 동쪽 돌다리(≈126.9755)로만 접근 가능 → 경유점 보강
         // ═══════════════════════════════════════════════════════════════
         TourCourse(
             id = "course_60",
@@ -69,7 +70,7 @@ class TourCourseRepository @Inject constructor() {
                 "ja" to "40分コースに修政殿・慶会楼・慈慶殿を加えた標準コース。最もおすすめの観覧動線。",
                 "zh" to "在40分钟路线基础上增加修政殿、庆会楼、慈庆殿的标准路线。最推荐的游览动线。"
             ),
-            approxDistanceM = 1500,
+            approxDistanceM = 1600,
             waypoints = listOf(
                 stopGate(1, "gate_heungnyemun", 37.5770, 126.9769, "흥례문", "Heungnyemun", "興禮門", "兴礼门"),
                 stopHeritage(2, "geunjeongmun", 37.5788, 126.9770, "근정문", "Geunjeongmun", "勤政門", "勤政门"),
@@ -78,22 +79,28 @@ class TourCourseRepository @Inject constructor() {
                 // 서쪽 수정전·경회루로 이동하는 경유점
                 path(5, 37.5802, 126.9765),
                 stopHeritage(6, "sujeongjeon", 37.5801, 126.9760, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
-                stopHeritage(7, "gyeonghoeru", 37.5800, 126.9749, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
-                // 다시 동쪽 강녕전으로
-                path(8, 37.5805, 126.9760),
-                stopHeritage(9, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
-                stopHeritage(10, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
+                // 경회루 연못 동쪽 다리 진입점 (물 회피)
+                path(7, 37.5800, 126.9756),
+                stopHeritage(8, "gyeonghoeru", 37.5800, 126.9749, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
+                // 경회루 나와서 동쪽 다리로 복귀 후 북쪽 이동 (물 회피)
+                path(9, 37.5800, 126.9756),
+                path(10, 37.5805, 126.9760),
+                stopHeritage(11, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
+                stopHeritage(12, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
                 // 북동쪽 자경전으로
-                path(11, 37.5813, 126.9775),
-                stopHeritage(12, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿"),
+                path(13, 37.5813, 126.9775),
+                stopHeritage(14, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿"),
                 // 남쪽 광화문 출구로
-                path(13, 37.5795, 126.9775),
-                stopHeritage(14, "gwanghwamun", 37.5759, 126.9769, "광화문", "Gwanghwamun", "光化門", "光化门")
+                path(15, 37.5795, 126.9775),
+                stopHeritage(16, "gwanghwamun", 37.5759, 126.9769, "광화문", "Gwanghwamun", "光化門", "光化门")
             )
         ),
 
         // ═══════════════════════════════════════════════════════════════
         // 90분 코스 — 경복궁 완주
+        // 물 건너 지름길 방지:
+        //   1) 경회루 연못(≈126.9755)  : 동쪽 다리(126.9756)로 접근/이탈
+        //   2) 향원지 연못(≈37.5822,126.9768) : 북쪽 취향교(37.5826)로 돌아가기
         // ═══════════════════════════════════════════════════════════════
         TourCourse(
             id = "course_90",
@@ -110,7 +117,7 @@ class TourCourseRepository @Inject constructor() {
                 "ja" to "景福宮全域13の殿閣を巡る完走コース。後苑エリア（香遠亭・乾清宮・集玉斎）まで含む。",
                 "zh" to "游览景福宫全部13处主要殿阁的完整路线。包括后苑区域（香远亭、乾清宫、集玉斋）。"
             ),
-            approxDistanceM = 2500,
+            approxDistanceM = 2600,
             waypoints = listOf(
                 stopGate(1, "gate_heungnyemun", 37.5770, 126.9769, "흥례문", "Heungnyemun", "興禮門", "兴礼门"),
                 stopHeritage(2, "geunjeongmun", 37.5788, 126.9770, "근정문", "Geunjeongmun", "勤政門", "勤政门"),
@@ -118,26 +125,35 @@ class TourCourseRepository @Inject constructor() {
                 stopHeritage(4, "sajeongjeon", 37.5802, 126.9770, "사정전", "Sajeongjeon", "思政殿", "思政殿"),
                 path(5, 37.5802, 126.9765),
                 stopHeritage(6, "sujeongjeon", 37.5801, 126.9760, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
-                stopHeritage(7, "gyeonghoeru", 37.5800, 126.9749, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
-                path(8, 37.5805, 126.9760),
-                stopHeritage(9, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
-                stopHeritage(10, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
-                path(11, 37.5813, 126.9775),
-                stopHeritage(12, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿"),
-                // 동궁 영역
-                path(13, 37.5806, 126.9780),
-                stopHeritage(14, "donggung", 37.5803, 126.9782, "동궁", "Donggung", "東宮", "东宫"),
-                // 북쪽 후원 영역
-                path(15, 37.5815, 126.9775),
-                stopHeritage(16, "hyangwonjeong", 37.5822, 126.9768, "향원정", "Hyangwonjeong", "香遠亭", "香远亭"),
-                stopHeritage(17, "geoncheongung", 37.5826, 126.9770, "건청궁", "Geoncheongung", "乾清宮", "乾清宫"),
-                stopHeritage(18, "jibokjae", 37.5829, 126.9775, "집옥재", "Jibokjae", "集玉齋", "集玉斋"),
-                // 서쪽 태원전
-                path(19, 37.5822, 126.9765),
-                stopHeritage(20, "taeweonjeon", 37.5815, 126.9755, "태원전", "Taeweonjeon", "泰元殿", "泰元殿"),
+                // 경회루 연못 동쪽 다리 진입점 (물 회피)
+                path(7, 37.5800, 126.9756),
+                stopHeritage(8, "gyeonghoeru", 37.5800, 126.9749, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
+                // 경회루 동쪽 다리 복귀 → 북쪽 강녕전
+                path(9, 37.5800, 126.9756),
+                path(10, 37.5805, 126.9760),
+                stopHeritage(11, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
+                stopHeritage(12, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
+                path(13, 37.5813, 126.9775),
+                stopHeritage(14, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿"),
+                // 동궁 영역 (동쪽)
+                path(15, 37.5806, 126.9780),
+                stopHeritage(16, "donggung", 37.5803, 126.9782, "동궁", "Donggung", "東宮", "东宫"),
+                // 향원지 동쪽·북쪽 경유 (물 회피, 취향교 쪽)
+                path(17, 37.5815, 126.9780),
+                path(18, 37.5823, 126.9776),   // 향원지 북동쪽 모퉁이
+                path(19, 37.5826, 126.9768),   // 향원지 북쪽 취향교 진입
+                stopHeritage(20, "hyangwonjeong", 37.5822, 126.9768, "향원정", "Hyangwonjeong", "香遠亭", "香远亭"),
+                // 향원정 → 건청궁 (북쪽 방향, 물 없음)
+                path(21, 37.5826, 126.9768),   // 다시 북쪽으로 나와서
+                stopHeritage(22, "geoncheongung", 37.5826, 126.9770, "건청궁", "Geoncheongung", "乾清宮", "乾清宫"),
+                stopHeritage(23, "jibokjae", 37.5829, 126.9775, "집옥재", "Jibokjae", "集玉齋", "集玉斋"),
+                // 서쪽 태원전 (향원지 서쪽으로 우회)
+                path(24, 37.5827, 126.9762),
+                path(25, 37.5822, 126.9758),
+                stopHeritage(26, "taeweonjeon", 37.5815, 126.9755, "태원전", "Taeweonjeon", "泰元殿", "泰元殿"),
                 // 북문(신무문) 출구
-                path(21, 37.5822, 126.9760),
-                stopGate(22, "gate_north", 37.5830, 126.9766, "신무문", "Sinmumun", "神武門", "神武门")
+                path(27, 37.5822, 126.9760),
+                stopGate(28, "gate_north", 37.5830, 126.9766, "신무문", "Sinmumun", "神武門", "神武门")
             )
         )
     )

@@ -4,8 +4,15 @@ import android.content.Context
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -165,28 +172,15 @@ fun MapScreen(
                 zoomControlsEnabled = false
             )
         ) {
-            // ── 내 위치 마커 ───────────────────────────────────────────────
+            // ── 내 위치 마커 (구글맵 스타일 펄스 애니메이션) ────────────────
             currentLocation?.let { loc ->
                 MarkerComposable(
                     keys = arrayOf("my_location", loc.latitude, loc.longitude),
                     state = MarkerState(position = LatLng(loc.latitude, loc.longitude)),
+                    anchor = androidx.compose.ui.geometry.Offset(0.5f, 0.5f),
                     zIndex = 10f
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Box(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .background(Color(0x331565C0), androidx.compose.foundation.shape.CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Box(Modifier.size(12.dp).background(Color(0xFF1565C0), androidx.compose.foundation.shape.CircleShape))
-                        }
-                        Text(
-                            text = when (targetLanguage) { "en" -> "Me"; "ja" -> "現在地"; "zh" -> "我"; else -> "내 위치" },
-                            fontSize = 9.sp, color = Color(0xFF1565C0), fontWeight = FontWeight.Bold,
-                            modifier = Modifier.background(Color.White.copy(alpha = 0.9f), RoundedCornerShape(3.dp)).padding(horizontal = 3.dp)
-                        )
-                    }
+                    PulsingLocationMarker()
                 }
             }
 
@@ -242,18 +236,51 @@ fun MapScreen(
 
             // ── 코스 Polyline + 번호 마커 ─────────────────────────────────
             selectedCourse?.let { course ->
-                // 구글맵 네비게이션 표준 색상 (Material Blue 500, Google Maps route blue)
-                val googleRouteBlue = Color(0xFF4285F4)
-                val googleTraveledGray = Color(0xFF9AA0A6)
+                // 구글맵 네비게이션 표준 색상
+                val googleRouteBlue = Color(0xFF4285F4)         // 앞으로 갈 길
+                val googleTraveledGray = Color(0xFF9AA0A6)      // 이미 지나온 길
 
-                val pathPoints = course.waypoints
-                    .sortedBy { it.order }
-                    .map { LatLng(it.latitude, it.longitude) }
+                val sortedWaypoints = course.waypoints.sortedBy { it.order }
+                // 마지막 방문한 stop의 order (없으면 -1)
+                val lastVisitedStopOrder = course.stops
+                    .filter { it.order in visitedOrders }
+                    .maxOfOrNull { it.order } ?: -1
 
-                // 1) 전체 경로 선 — 항상 (preview/navigating 둘 다)
-                if (pathPoints.size >= 2) {
+                // 지나온 경로와 앞으로 갈 경로 분리.
+                // lastVisitedStopOrder 까지의 waypoint들은 "지나온 길"로 회색 처리.
+                val traveledPoints = mutableListOf<LatLng>()
+                val upcomingPoints = mutableListOf<LatLng>()
+                var splitReached = false
+                sortedWaypoints.forEach { wp ->
+                    val pt = LatLng(wp.latitude, wp.longitude)
+                    if (!splitReached && wp.order <= lastVisitedStopOrder) {
+                        traveledPoints.add(pt)
+                    } else {
+                        // 연결점은 양쪽 모두에 포함해 선이 끊어지지 않게
+                        if (!splitReached && traveledPoints.isNotEmpty()) {
+                            traveledPoints.add(pt)  // 경계에서 마지막 한 점 공유
+                        }
+                        upcomingPoints.add(pt)
+                        splitReached = true
+                    }
+                }
+
+                // 1a) 지나온 경로 — 회색
+                if (traveledPoints.size >= 2) {
                     Polyline(
-                        points = pathPoints,
+                        points = traveledPoints,
+                        color = googleTraveledGray,
+                        width = 12f,
+                        jointType = com.google.android.gms.maps.model.JointType.ROUND,
+                        startCap = com.google.android.gms.maps.model.RoundCap(),
+                        endCap = com.google.android.gms.maps.model.RoundCap(),
+                        zIndex = 3f
+                    )
+                }
+                // 1b) 앞으로 갈 경로 — 파랑
+                if (upcomingPoints.size >= 2) {
+                    Polyline(
+                        points = upcomingPoints,
                         color = googleRouteBlue,
                         width = 14f,
                         jointType = com.google.android.gms.maps.model.JointType.ROUND,
@@ -263,7 +290,7 @@ fun MapScreen(
                     )
                 }
 
-                // 2) 내비게이션 모드: 내 위치에서 다음 웨이포인트까지의 실선 강조
+                // 2) 내비게이션 모드: 내 위치 → 다음 웨이포인트까지 실선 강조 (파랑 굵게)
                 if (isNavigating && currentLocation != null && nextWaypointOrder != null) {
                     val nextWp = course.stops.firstOrNull { it.order == nextWaypointOrder }
                     if (nextWp != null) {
@@ -685,6 +712,77 @@ private fun isNetworkAvailable(context: Context): Boolean {
     val network = cm.activeNetwork ?: return false
     val caps = cm.getNetworkCapabilities(network) ?: return false
     return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+}
+
+/**
+ * 내 위치 마커 — 구글맵 스타일 펄스 애니메이션.
+ *
+ * 구성:
+ *  1. 바깥쪽 확장 링: 반복적으로 커지며 페이드 아웃 (구글 파랑 그라데이션)
+ *  2. 두 번째 링: 첫 링과 시차를 두고 확장 → 연속적으로 퍼지는 효과
+ *  3. 흰색 테두리 원 (배경 구분)
+ *  4. 중앙 단색 파란 점 (고정)
+ */
+@Composable
+private fun PulsingLocationMarker() {
+    val googleBlue = Color(0xFF4285F4)
+    val transition = rememberInfiniteTransition(label = "loc_pulse")
+
+    val scale1 by transition.animateFloat(
+        initialValue = 0.4f,
+        targetValue = 2.4f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 2000,
+                easing = LinearOutSlowInEasing
+            ),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "pulse_scale_1"
+    )
+    val alpha1 by transition.animateFloat(
+        initialValue = 0.55f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 2000,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "pulse_alpha_1"
+    )
+
+    Box(
+        modifier = Modifier.size(64.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        // 1) 바깥 펄스 링 (확장 + 페이드)
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .graphicsLayer {
+                    scaleX = scale1
+                    scaleY = scale1
+                    this.alpha = alpha1
+                }
+                .background(googleBlue, CircleShape)
+        )
+
+        // 2) 흰색 외곽 (배경 대비)
+        Box(
+            modifier = Modifier
+                .size(22.dp)
+                .background(Color.White, CircleShape)
+        )
+
+        // 3) 중앙 단색 파란 점 (구글맵 시그니처 도트)
+        Box(
+            modifier = Modifier
+                .size(16.dp)
+                .background(googleBlue, CircleShape)
+        )
+    }
 }
 
 /**
