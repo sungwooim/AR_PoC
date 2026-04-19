@@ -195,6 +195,15 @@
 - **수정**: SpatialCalculator / LocalHeritageKnowledgeSource / RuleRetriever / QuizRepository 테스트 총 37개 추가
 - **규칙 승격**: ✅ AGENTS.md 체크리스트: "데이터 추가 시 대응 테스트 업데이트" 추가
 
+## 2026-04-19 세션 3 기록
+
+### [2026-04-19] 대규모 데이터 확장 시 테스트 규칙 유연화 필요
+- **발견 위치**: LocalHeritageKnowledgeSourceTest - `every chunk has all 4 language contentMap`
+- **패턴**: PDF 공식 청크(pdf_official)는 ko 원문만 있어 4개국어 강제 테스트 실패
+- **원인**: 테스트가 "모든 청크 = 4개국어"로 하드코딩되어 일부 특수 청크 유형 수용 불가
+- **수정**: `filterNot { endsWith("_pdf_official") }`로 예외 처리 + 별도 테스트로 "공식 청크 존재 + ko 내용 유효" 검증
+- **규칙 승격**: ✅ 특수 청크 유형 도입 시 테스트 분리 원칙 확립
+
 ## 2026-04-19 세션 2 기록
 
 ### [2026-04-19] macOS HFS 파일명 NFD 유니코드 정규화 문제

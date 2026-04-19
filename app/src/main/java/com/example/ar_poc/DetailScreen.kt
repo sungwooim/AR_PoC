@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.ar_poc.Strings
 import com.example.ar_poc.domain.repository.HeritageRepository
 import com.example.ar_poc.ui.components.AssetImage
+import com.example.ar_poc.ui.components.ImageGallery
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -152,6 +153,15 @@ fun DetailScreen(
                     style = MaterialTheme.typography.bodyLarge,
                     lineHeight = 24.sp
                 )
+
+                // 갤러리 (cover 외 추가 이미지가 있을 때)
+                if (originalContent.galleryImageAssets.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ImageGallery(
+                        imagePaths = originalContent.galleryImageAssets,
+                        contentDescriptionPrefix = title
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(24.dp))
                 HorizontalDivider(modifier = Modifier.alpha(0.5f))

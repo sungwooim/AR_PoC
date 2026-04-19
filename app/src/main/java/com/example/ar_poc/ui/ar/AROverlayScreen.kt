@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
@@ -408,17 +409,36 @@ fun PoiInfoDialog(
 
                 Spacer(Modifier.height(16.dp))
 
-                // 안내 문구
-                val guideText = when (targetLanguage) {
-                    "en" -> "This is a ${typeLabel.lowercase()} facility within Gyeongbokgung Palace."
-                    "ja" -> "景福宮内の${typeLabel}施設です。"
-                    "zh" -> "这是景福宫内的${typeLabel}设施。"
-                    else -> "경복궁 내 ${typeLabel} 시설입니다."
+                // POI 이미지 (있으면)
+                poi.imageAsset?.takeIf { it.isNotBlank() }?.let { path ->
+                    com.example.ar_poc.ui.components.AssetImage(
+                        assetPath = path,
+                        contentDescription = poi.localizedTitle(targetLanguage),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                    )
+                    Spacer(Modifier.height(12.dp))
+                }
+
+                // 공식 설명 (있으면 우선, 없으면 일반 안내문)
+                val pdfDesc = poi.localizedDescription(targetLanguage)
+                val guideText = if (pdfDesc.isNotBlank()) {
+                    pdfDesc
+                } else {
+                    when (targetLanguage) {
+                        "en" -> "This is a ${typeLabel.lowercase()} facility within Gyeongbokgung Palace."
+                        "ja" -> "景福宮内の${typeLabel}施設です。"
+                        "zh" -> "这是景福宫内的${typeLabel}设施。"
+                        else -> "경복궁 내 ${typeLabel} 시설입니다."
+                    }
                 }
                 Text(
                     text = guideText,
                     color = Color.LightGray,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp
                 )
 
                 Spacer(Modifier.height(20.dp))

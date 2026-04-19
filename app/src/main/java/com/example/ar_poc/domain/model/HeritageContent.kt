@@ -23,7 +23,13 @@ data class HeritageContent(
      * 예: "heritage/geunjeongjeon_cover.jpg" → app/src/main/assets/heritage/geunjeongjeon_cover.jpg
      * null 또는 공백이면 이미지 없음 — DetailScreen은 플레이스홀더 표시.
      */
-    val coverImageAsset: String? = null
+    val coverImageAsset: String? = null,
+    /**
+     * 갤러리 이미지 asset 경로 목록 (cover 외).
+     * DetailScreen에서 수평 슬라이드로 표시.
+     * 경로 예: "heritage/geunjeongjeon_1.jpg", "heritage/geunjeongjeon_2.jpg", ...
+     */
+    val galleryImageAssets: List<String> = emptyList()
 )
 
 data class HeritageChunk(

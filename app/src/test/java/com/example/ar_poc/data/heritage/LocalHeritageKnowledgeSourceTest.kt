@@ -70,15 +70,36 @@ class LocalHeritageKnowledgeSourceTest {
     }
 
     @Test
-    fun `every chunk has all 4 language contentMap`() {
+    fun `every curated chunk has all 4 language contentMap`() {
+        // PDF 공식 청크(pdf_official)는 ko 원문만 가지도록 예외 처리.
+        // 큐레이션된 일반 청크는 4개국어 완비.
         val requiredLangs = setOf("ko", "en", "ja", "zh")
         source.getHeritageList().forEach { heritage ->
-            heritage.chunks.forEach { chunk ->
-                assertTrue("${heritage.id}/${chunk.chunkId} missing contentMap languages",
-                    chunk.contentMap.keys.containsAll(requiredLangs))
-                assertTrue("${heritage.id}/${chunk.chunkId} missing titleMap languages",
-                    chunk.titleMap.keys.containsAll(requiredLangs))
-            }
+            heritage.chunks
+                .filterNot { it.chunkId.endsWith("_pdf_official") }
+                .forEach { chunk ->
+                    assertTrue("${heritage.id}/${chunk.chunkId} missing contentMap languages",
+                        chunk.contentMap.keys.containsAll(requiredLangs))
+                    assertTrue("${heritage.id}/${chunk.chunkId} missing titleMap languages",
+                        chunk.titleMap.keys.containsAll(requiredLangs))
+                }
+        }
+    }
+
+    @Test
+    fun `pdf official chunks exist for p1 p2 heritages and have korean content`() {
+        val expected = listOf(
+            "geunjeongjeon", "gyeonghoeru", "gwanghwamun",
+            "sajeongjeon", "sujeongjeon", "gangnyeongjeon", "gyotaejeon",
+            "jagyeongjeon", "hyangwonjeong", "geoncheongung", "jibokjae", "donggung",
+            "taeweonjeon", "heungbokjeon", "geunjeongmun"
+        )
+        expected.forEach { hid ->
+            val h = source.getHeritageById(hid) ?: error("Missing heritage $hid")
+            val pdfChunk = h.chunks.firstOrNull { it.chunkId == "${hid}_pdf_official" }
+            assertTrue("$hid should have pdf_official chunk", pdfChunk != null)
+            assertTrue("$hid pdf_official ko content missing",
+                !pdfChunk!!.contentMap["ko"].isNullOrBlank())
         }
     }
 

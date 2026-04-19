@@ -12,10 +12,25 @@ data class Poi(
     val latitude: Double,
     val longitude: Double,
     /** 유산 건물(heritage/gate 등)인 경우 기존 HeritageContent 연결 (optional) */
-    val linkedHeritage: HeritageContent? = null
+    val linkedHeritage: HeritageContent? = null,
+    /**
+     * POI 대표 이미지 asset 경로 (상대).
+     * 예: "heritage/poi_gate_east_cover.jpg"
+     * null이면 이미지 없음 — PoiInfoDialog는 아이콘만 표시.
+     */
+    val imageAsset: String? = null,
+    /**
+     * POI 설명 (다국어).
+     * PDF 원문 기반 짧은 소개. PoiInfoDialog에서 표시.
+     */
+    val descriptionMap: Map<String, String> = emptyMap()
 ) {
     /** 표시 언어에 맞는 제목 반환. 없으면 기본 title로 fallback */
     fun localizedTitle(lang: String): String = titleMap[lang] ?: title
+
+    /** 표시 언어에 맞는 설명 반환. 없으면 빈 문자열 */
+    fun localizedDescription(lang: String): String =
+        descriptionMap[lang] ?: descriptionMap["ko"] ?: ""
 }
 
 // ─────────────────────────────────────────────────────────────────────
