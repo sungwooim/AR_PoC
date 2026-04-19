@@ -129,37 +129,79 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "geun_signboard",
                     displayName = mapOf("ko" to "근정전 현판", "en" to "Geunjeongjeon Signboard", "ja" to "勤政殿の扁額", "zh" to "勤政殿匾额"),
                     visualHints = listOf("large wooden sign with korean characters on building", "palace hall name plaque", "rectangular nameplate mounted on top of main hall"),
-                    linkedChunkId = "geun_01"
+                    linkedChunkId = "geun_01",
+                    locationHint = mapOf("ko" to "근정전 정면 2층 지붕 밑 중앙, 검은 바탕에 금색 한자로 쓰인 현판을 올려다보세요.", "en" to "Look up at the center beneath the upper roof of Geunjeongjeon.", "ja" to "勤政殿正面の2階屋根の下、中央を見上げてください。", "zh" to "抬头看勤政殿正面二层屋檐下中央。")
                 ),
                 SubElement(
                     id = "geun_iron_ring",
                     displayName = mapOf("ko" to "차일고리 (마당 쇠고리)", "en" to "Chail Iron Ring", "ja" to "遮日の鉄輪", "zh" to "遮日铁环"),
                     visualHints = listOf("metal iron ring embedded in stone floor", "rusty metal loop on stone pavement", "iron ring for chail on bakseok"),
-                    linkedChunkId = "geun_03"
+                    linkedChunkId = "geun_03",
+                    locationHint = mapOf("ko" to "근정전 앞마당(조정) 박석 사이를 찾아 보세요.", "en" to "Scan the Bakseok pavement in front of Geunjeongjeon.", "ja" to "勤政殿前庭の薄石の間を探してみてください。", "zh" to "在勤政殿前院的薄石之间寻找。")
                 ),
                 SubElement(
                     id = "geun_rank_stone",
                     displayName = mapOf("ko" to "품계석 (직급 표시돌)", "en" to "Rank Stone", "ja" to "品階石", "zh" to "品阶石"),
                     visualHints = listOf("small stone pillar with korean characters", "stone marker lined up in courtyard", "carved stone post in palace courtyard"),
-                    linkedChunkId = "geun_03"
+                    linkedChunkId = "geun_03",
+                    locationHint = mapOf("ko" to "근정전 앞마당 중앙 삼도 양옆을 따라 늘어선 작은 돌기둥들.", "en" to "Along the sides of the three central paths in front of Geunjeongjeon.", "ja" to "勤政殿前庭の中央三道の両側に並んだ小さな石柱。", "zh" to "沿着勤政殿前院中央三道的两侧寻找小石柱。")
                 ),
                 SubElement(
                     id = "geun_zodiac_statue",
                     displayName = mapOf("ko" to "월대 십이지신상", "en" to "Zodiac Animal Statue", "ja" to "月台 十二支神像", "zh" to "月台 十二生肖像"),
                     visualHints = listOf("stone carved animal statue on balustrade", "zodiac animal stone sculpture on stone fence", "stone guardian animal figure on stairs"),
-                    linkedChunkId = "geun_02"
+                    linkedChunkId = "geun_02",
+                    locationHint = mapOf("ko" to "근정전 2단 월대 난간 귀퉁이와 계단 주위의 작은 동물 석상.", "en" to "Small animal statues at corners and stair railings of Geunjeongjeon's Woldae.", "ja" to "勤政殿の月台の欄干の角と階段周囲の小さな動物石像。", "zh" to "勤政殿月台栏杆角落和台阶周围的小动物石像。")
                 ),
                 SubElement(
                     id = "geun_chiljolyong",
                     displayName = mapOf("ko" to "칠조룡 (천장 7발톱 용)", "en" to "Seven-clawed Dragon", "ja" to "七爪龍", "zh" to "七爪龙"),
                     visualHints = listOf("golden dragon sculpture on ceiling", "dragon with seven claws on ceiling center", "carved golden dragon looking down from ceiling"),
-                    linkedChunkId = "geun_04"
+                    linkedChunkId = "geun_04",
+                    locationHint = mapOf("ko" to "근정전 내부 천장 한가운데를 올려다보세요. 황금빛 용 두 마리.", "en" to "Look up at the center of Geunjeongjeon's interior ceiling — two golden dragons.", "ja" to "勤政殿内部の天井中央を見上げてください。金色の龍。", "zh" to "抬头看勤政殿内部天花板中央——两条金龙。")
                 ),
                 SubElement(
                     id = "geun_deumu",
                     displayName = mapOf("ko" to "드무 (화재맥이 청동솥)", "en" to "Deumu (Bronze Water Vat)", "ja" to "ドゥム (防火用青銅釜)", "zh" to "防火青铜鼎"),
                     visualHints = listOf("large bronze cauldron in palace courtyard", "massive metal water vat near building", "wide iron pot on stone base for fire prevention"),
-                    linkedChunkId = "geun_02"
+                    linkedChunkId = "geun_02",
+                    locationHint = mapOf("ko" to "근정전 앞 월대 모서리의 큰 청동 방화수 항아리.", "en" to "Large bronze cauldron-shaped fire-prevention vats at Geunjeongjeon's Woldae corners.", "ja" to "勤政殿前の月台の角に置かれた大きな青銅釜形の防火水壺。", "zh" to "勤政殿前月台角落的大青铜釜形防火水壶。")
+                ),
+                SubElement(
+                    id = "geun_throne",
+                    displayName = mapOf("ko" to "어좌 (왕의 자리)", "en" to "Eojwa (Royal Throne)", "ja" to "御座 (王の座)", "zh" to "御座（王座）"),
+                    visualHints = listOf("royal wooden throne inside traditional palace hall", "elaborately carved throne seat on raised platform", "ornate golden-red throne with folding screen behind"),
+                    linkedChunkId = "geun_02",
+                    locationHint = mapOf(
+                        "ko" to "근정전 내부 북쪽 가운데에 설치된 왕의 자리(어좌)를 창호 너머로 찾아보세요.",
+                        "en" to "Look through the window lattice at Geunjeongjeon's interior — the royal throne stands at the north center.",
+                        "ja" to "勤政殿内部の北側中央に設置された王の御座を、格子戸越しに探してください。",
+                        "zh" to "透过勤政殿的窗棂，寻找设置在内部北侧中央的王座（御座）。"
+                    )
+                ),
+                SubElement(
+                    id = "geun_ilworobongdo",
+                    displayName = mapOf("ko" to "일월오봉도 병풍", "en" to "Irworobongdo (Sun-Moon-Five Peaks Screen)", "ja" to "日月五峰図 屏風", "zh" to "日月五峰图 屏风"),
+                    visualHints = listOf("folding screen painting with sun moon and five mountain peaks", "traditional Korean painting of red sun and white moon with five mountains", "royal screen with ocean waves and peaks behind throne"),
+                    linkedChunkId = "geun_02",
+                    locationHint = mapOf(
+                        "ko" to "근정전 어좌 바로 뒤에 해, 달, 다섯 봉우리가 그려진 병풍이 있습니다.",
+                        "en" to "Directly behind the throne in Geunjeongjeon stands the folding screen painted with sun, moon, and five peaks.",
+                        "ja" to "勤政殿の御座のすぐ後ろに、太陽・月・五つの峰が描かれた屏風があります。",
+                        "zh" to "勤政殿御座正后方有一扇画着日、月、五峰的屏风。"
+                    )
+                ),
+                SubElement(
+                    id = "geun_samdo",
+                    displayName = mapOf("ko" to "삼도 (조정의 세 갈래 길)", "en" to "Samdo (Three Ceremonial Paths)", "ja" to "三道 (朝廷の三つの道)", "zh" to "三道（朝廷三条道）"),
+                    visualHints = listOf("three stone paths leading across palace courtyard", "raised central stone road flanked by two lower paths", "granite ceremonial road divided into three lanes"),
+                    linkedChunkId = "geun_03",
+                    locationHint = mapOf(
+                        "ko" to "근정문을 지나 근정전으로 가는 앞마당 중앙에 세 갈래 돌길이 있습니다. 가운데가 어도(왕의 길).",
+                        "en" to "Walking from Geunjeongmun to Geunjeongjeon, three stone paths run through the courtyard — the middle (Eodo) was for the king.",
+                        "ja" to "勤政門から勤政殿へ向かう前庭の中央に三道があります。中央は御道（王の道）。",
+                        "zh" to "从勤政门通往勤政殿的前庭中央有三道——中间的御道是国王专用。"
+                    )
                 )
             ),
             coverImageAsset = "heritage/geunjeongjeon_cover.jpg",
@@ -283,25 +325,41 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "gy_pond",
                     displayName = mapOf("ko" to "경회루 연못", "en" to "Gyeonghoeru Pond", "ja" to "慶会楼の池", "zh" to "庆会楼池塘"),
                     visualHints = listOf("large rectangular palace pond with pavilion reflection", "still water reflecting wooden pavilion", "lotus pond with stone embankment"),
-                    linkedChunkId = "gy_03"
+                    linkedChunkId = "gy_03",
+                    locationHint = mapOf("ko" to "경회루 주변 직사각형 연못과 수면 반영.", "en" to "The rectangular pond around Gyeonghoeru and its reflection.", "ja" to "慶会楼周辺の長方形の池と水面に映る姿。", "zh" to "庆会楼周围的长方形池塘和水中倒影。")
                 ),
                 SubElement(
                     id = "gy_japsang",
                     displayName = mapOf("ko" to "잡상 (지붕 위 수호신)", "en" to "Japsang (Roof Figures)", "ja" to "雑像 (屋根の守り神)", "zh" to "杂像 (屋顶守护神)"),
                     visualHints = listOf("small clay animal figures lining roof ridge", "ceramic monkey and monk statues on palace roof edge", "roof edge guardian figures"),
-                    linkedChunkId = "gy_01"
+                    linkedChunkId = "gy_01",
+                    locationHint = mapOf("ko" to "경회루 지붕 네 귀퉁이 추녀마루의 작은 토우 장식.", "en" to "Clay figurines on the four roof edges of Gyeonghoeru.", "ja" to "慶会楼の屋根の四隅の棟の小さな土偶飾り。", "zh" to "庆会楼屋顶四角屋脊上的小陶偶装饰。")
                 ),
                 SubElement(
                     id = "gy_square_pillar",
                     displayName = mapOf("ko" to "외곽 사각 기둥", "en" to "Outer Square Pillar", "ja" to "外郭の四角柱", "zh" to "外侧方柱"),
                     visualHints = listOf("square shaped stone column supporting pavilion", "huge rectangular stone pillars standing in water", "flat angled stone columns"),
-                    linkedChunkId = "gy_02"
+                    linkedChunkId = "gy_02",
+                    locationHint = mapOf("ko" to "경회루를 받치는 외곽 사각형 돌기둥 (24개, 땅 상징).", "en" to "Outer square stone pillars supporting Gyeonghoeru (24, Earth).", "ja" to "慶会楼を支える外側の四角柱（24本、大地）。", "zh" to "支撑庆会楼的外侧方形柱（24根，象征大地）。")
                 ),
                 SubElement(
                     id = "gy_round_pillar",
                     displayName = mapOf("ko" to "내부 원형 기둥", "en" to "Inner Round Pillar", "ja" to "内部の円柱", "zh" to "内侧圆柱"),
                     visualHints = listOf("cylindrical round stone column supporting pavilion", "smooth circular stone pillars under pavilion", "round column standing on stone base"),
-                    linkedChunkId = "gy_02"
+                    linkedChunkId = "gy_02",
+                    locationHint = mapOf("ko" to "경회루 안쪽 둥근 돌기둥 (24개, 하늘 상징).", "en" to "Inner round stone pillars under Gyeonghoeru (24, Heaven).", "ja" to "慶会楼の内側の丸い石柱（24本、天）。", "zh" to "庆会楼内侧的圆形柱（24根，象征天）。")
+                ),
+                SubElement(
+                    id = "gy_stone_bridges",
+                    displayName = mapOf("ko" to "경회루 돌다리 3개", "en" to "Three Stone Bridges of Gyeonghoeru", "ja" to "慶会楼の3つの石橋", "zh" to "庆会楼三座石桥"),
+                    visualHints = listOf("three stone bridges crossing palace pond to pavilion", "short stone bridges over rectangular palace pond", "multiple parallel stone paths across water"),
+                    linkedChunkId = "gy_01",
+                    locationHint = mapOf(
+                        "ko" to "연못 동쪽에서 경회루로 이어지는 돌다리 3개를 찾으세요. 가운데 다리는 왕이 사용했습니다.",
+                        "en" to "Find the three stone bridges from the east of the pond to Gyeonghoeru — the middle one was for the king.",
+                        "ja" to "池の東側から慶会楼へ続く3つの石橋を探してください。中央の橋は王が使いました。",
+                        "zh" to "寻找从池塘东侧通向庆会楼的三座石桥——中间的桥是国王专用。"
+                    )
                 )
             ),
             coverImageAsset = "heritage/gyeonghoeru_cover.jpg",
@@ -425,31 +483,36 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "gw_arches",
                     displayName = mapOf("ko" to "세 개의 홍예문 (무지개 아치)", "en" to "Three Rainbow Arches", "ja" to "3つの虹霓門", "zh" to "三个彩虹拱门"),
                     visualHints = listOf("three arched stone gate passages", "large stone gate with three arch openings", "stone wall with three rounded archways"),
-                    linkedChunkId = "gw_02"
+                    linkedChunkId = "gw_02",
+                    locationHint = mapOf("ko" to "광화문 석축 기단 아래의 세 개 아치형 통로.", "en" to "Three arched passages beneath Gwanghwamun's stone foundation.", "ja" to "光化門の石積み基壇下の3つのアーチ状通路。", "zh" to "光化门石砌基台下的三个拱形通道。")
                 ),
                 SubElement(
                     id = "gw_haetae",
                     displayName = mapOf("ko" to "해태 석상", "en" to "Haetae Stone Statue", "ja" to "ヘテ石像", "zh" to "獬豸石像"),
                     visualHints = listOf("stone mythical lion-like creature statue", "seated stone animal sculpture at gate entrance", "carved stone haechi guardian statue"),
-                    linkedChunkId = "gw_04"
+                    linkedChunkId = "gw_04",
+                    locationHint = mapOf("ko" to "광화문 앞 좌우의 해태 석상 한 쌍.", "en" to "The pair of Haetae statues flanking the front of Gwanghwamun.", "ja" to "光化門前の左右に座る獬豸石像。", "zh" to "光化门前左右对立的獬豸石像。")
                 ),
                 SubElement(
                     id = "gw_hongyemun_painting",
                     displayName = mapOf("ko" to "홍예문 천장 그림 (주작)", "en" to "Archway Ceiling Painting", "ja" to "虹霓門 天井画 (朱雀)", "zh" to "虹霓门 天花板壁画 (朱雀)"),
                     visualHints = listOf("colorful mythical bird painting on archway ceiling", "painted Vermilion Bird inside stone arch", "ceiling mural inside palace gate"),
-                    linkedChunkId = "gw_02"
+                    linkedChunkId = "gw_02",
+                    locationHint = mapOf("ko" to "광화문 아치 천장의 화려한 그림.", "en" to "The painted ceiling inside one of Gwanghwamun's arches.", "ja" to "光化門のアーチの天井の華やかな絵。", "zh" to "光化门拱门天花板上的华丽图案。")
                 ),
                 SubElement(
                     id = "gw_signboard",
                     displayName = mapOf("ko" to "광화문 현판", "en" to "Gwanghwamun Signboard", "ja" to "光化門の扁額", "zh" to "光化门匾额"),
                     visualHints = listOf("large wooden sign with Korean characters on gate", "gate name plaque with black calligraphy", "rectangular nameplate mounted on top of gate"),
-                    linkedChunkId = "gw_01"
+                    linkedChunkId = "gw_01",
+                    locationHint = mapOf("ko" to "광화문 2층 누각 정면 중앙의 대형 현판.", "en" to "The large signboard at the center front of Gwanghwamun's upper tower.", "ja" to "光化門の2階門楼正面中央の大型扁額。", "zh" to "光化门二层门楼正面中央的大型匾额。")
                 ),
                 SubElement(
                     id = "gw_sumunjang",
                     displayName = mapOf("ko" to "수문장 교대식", "en" to "Royal Guard Changing Ceremony", "ja" to "守門将交代式", "zh" to "守门将换岗仪式"),
                     visualHints = listOf("royal guard ceremony in traditional costume", "soldiers in colorful Joseon dynasty uniforms", "guard changing ceremony with flags and weapons"),
-                    linkedChunkId = "gw_03"
+                    linkedChunkId = "gw_03",
+                    locationHint = mapOf("ko" to "오전 10시, 오후 2시 광화문 앞 수문장 교대 의식.", "en" to "Royal Guard Changing Ceremony at 10:00 and 14:00 daily.", "ja" to "午前10時と午後2時の守門将交代儀式。", "zh" to "每天上午10点和下午2点的守门将换岗仪式。")
                 )
             ),
             coverImageAsset = "heritage/gwanghwamun_cover.jpg",
@@ -577,19 +640,46 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "saj_throne",
                     displayName = mapOf("ko" to "사정전 어좌", "en" to "Sajeongjeon Royal Throne", "ja" to "思政殿の御座", "zh" to "思政殿御座"),
                     visualHints = listOf("royal throne visible through traditional wooden lattice window", "king's seat with folding screen behind it inside single-story hall", "ornate wooden chair with sun-moon-peaks painting"),
-                    linkedChunkId = "saj_03"
+                    linkedChunkId = "saj_03",
+                    locationHint = mapOf("ko" to "사정전 창호 너머로 내부 중앙의 어좌 확인.", "en" to "Through Sajeongjeon's windows — royal throne at the center.", "ja" to "思政殿の格子戸越しに中央の御座を確認。", "zh" to "透过思政殿的窗棂查看中央的王座。")
                 ),
                 SubElement(
                     id = "saj_signboard",
                     displayName = mapOf("ko" to "사정전 현판", "en" to "Sajeongjeon Signboard", "ja" to "思政殿の扁額", "zh" to "思政殿匾额"),
                     visualHints = listOf("large wooden sign with korean characters on single-story hall", "palace hall name plaque on simple hip-and-gable roof building", "rectangular nameplate on smaller palace hall"),
-                    linkedChunkId = "saj_01"
+                    linkedChunkId = "saj_01",
+                    locationHint = mapOf("ko" to "사정전 정면 지붕 밑 중앙의 현판.", "en" to "The signboard at center beneath Sajeongjeon's front roof.", "ja" to "思政殿正面の屋根下中央の扁額。", "zh" to "思政殿正面屋檐下中央的匾额。")
                 ),
                 SubElement(
                     id = "saj_manchunjeon",
                     displayName = mapOf("ko" to "만춘전 (동쪽 부속전)", "en" to "Manchunjeon (East Annex)", "ja" to "万春殿（東側の付属殿）", "zh" to "万春殿（东侧附属殿）"),
                     visualHints = listOf("smaller palace building flanking east side of main hall", "auxiliary wooden hall with traditional roof", "side pavilion connected to main hall by corridor"),
-                    linkedChunkId = "saj_02"
+                    linkedChunkId = "saj_02",
+                    locationHint = mapOf("ko" to "사정전 동쪽 부속 전각 만춘전 — 온돌 있음.", "en" to "Manchunjeon east of Sajeongjeon — with ondol heating.", "ja" to "思政殿東側の萬春殿 — オンドル有り。", "zh" to "思政殿东侧的万春殿——设有暖炕。")
+                ),
+                SubElement(
+                    id = "saj_cheonchujeon",
+                    displayName = mapOf("ko" to "천추전 (서쪽 부속전)", "en" to "Cheonchujeon (West Annex)", "ja" to "千秋殿（西側の付属殿）", "zh" to "千秋殿（西侧附属殿）"),
+                    visualHints = listOf("western annex hall next to main executive office", "smaller palace building with ondol flooring", "auxiliary wing on the west side of executive hall"),
+                    linkedChunkId = "saj_02",
+                    locationHint = mapOf(
+                        "ko" to "사정전 서쪽 부속 전각 천추전(千秋殿) — '천년의 가을'이라는 뜻. 온돌 시설 있음.",
+                        "en" to "Cheonchujeon west of Sajeongjeon — meaning 'thousand autumns.' Has ondol heating.",
+                        "ja" to "思政殿西側の千秋殿 — 「千年の秋」の意味。オンドル設備あり。",
+                        "zh" to "思政殿西侧的千秋殿——意为\"千年之秋\"，设有暖炕。"
+                    )
+                ),
+                SubElement(
+                    id = "saj_ilworobongdo",
+                    displayName = mapOf("ko" to "사정전 일월오봉도", "en" to "Irworobongdo at Sajeongjeon", "ja" to "思政殿の日月五峰図", "zh" to "思政殿日月五峰图"),
+                    visualHints = listOf("folding screen with sun moon five peaks behind throne", "traditional royal painting of red sun and white moon", "symbolic royal screen placed behind the king's seat"),
+                    linkedChunkId = "saj_03",
+                    locationHint = mapOf(
+                        "ko" to "사정전 내부 어좌 뒤편의 일월오봉도 병풍 — 근정전과 같은 도안입니다.",
+                        "en" to "The Irworobongdo screen behind Sajeongjeon's throne — same motif as Geunjeongjeon.",
+                        "ja" to "思政殿の御座の後ろの日月五峰図屏風 — 勤政殿と同じ図案。",
+                        "zh" to "思政殿御座后方的日月五峰图屏风——与勤政殿图案相同。"
+                    )
                 )
             ),
             coverImageAsset = "heritage/sajeongjeon_cover.jpg",
@@ -717,13 +807,15 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "suj_signboard",
                     displayName = mapOf("ko" to "수정전 현판", "en" to "Sujeongjeon Signboard", "ja" to "修政殿の扁額", "zh" to "修政殿匾额"),
                     visualHints = listOf("large wooden sign on long rectangular hall", "palace hall name plaque on single-story elongated building", "nameplate on longest hall in the palace"),
-                    linkedChunkId = "suj_01"
+                    linkedChunkId = "suj_01",
+                    locationHint = mapOf("ko" to "긴 장방형 수정전 정면 중앙 현판.", "en" to "Center front signboard of long rectangular Sujeongjeon.", "ja" to "長方形の修政殿正面中央の扁額。", "zh" to "长方形修政殿正面中央的匾额。")
                 ),
                 SubElement(
                     id = "suj_corridor",
                     displayName = mapOf("ko" to "수정전 행각 (복도)", "en" to "Sujeongjeon Corridor", "ja" to "修政殿の行閣（回廊）", "zh" to "修政殿行廊（走廊）"),
                     visualHints = listOf("long covered wooden corridor connecting palace buildings", "traditional korean walkway with tiled roof connecting halls", "wooden corridor along the western side of palace courtyard"),
-                    linkedChunkId = "suj_02"
+                    linkedChunkId = "suj_02",
+                    locationHint = mapOf("ko" to "수정전 서쪽 행각(복도) 목조 기둥.", "en" to "Sujeongjeon's western corridor — wooden pillars.", "ja" to "修政殿西側の行閣（回廊）の木柱。", "zh" to "修政殿西侧行廊（走廊）的木柱。")
                 )
             ),
             coverImageAsset = "heritage/sujeongjeon_cover.jpg",
@@ -851,19 +943,22 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "gang_no_ridge",
                     displayName = mapOf("ko" to "용마루 없는 지붕", "en" to "Ridgeless Roof", "ja" to "棟のない屋根", "zh" to "无正脊屋顶"),
                     visualHints = listOf("traditional palace roof without horizontal ridge on top", "smooth roof top line without the usual ridge", "palace building with uniquely flat roof peak"),
-                    linkedChunkId = "gang_02"
+                    linkedChunkId = "gang_02",
+                    locationHint = mapOf("ko" to "강녕전 지붕 꼭대기 — 용마루가 없습니다.", "en" to "Gangnyeongjeon's roof top — no central ridge.", "ja" to "康寧殿の屋根の頂上 — 龍棟なし。", "zh" to "康宁殿屋顶顶部——没有正脊。")
                 ),
                 SubElement(
                     id = "gang_signboard",
                     displayName = mapOf("ko" to "강녕전 현판", "en" to "Gangnyeongjeon Signboard", "ja" to "康寧殿の扁額", "zh" to "康宁殿匾额"),
                     visualHints = listOf("large wooden sign with korean characters on palace bedchamber", "nameplate on ridgeless roof palace hall", "rectangular palace name plaque"),
-                    linkedChunkId = "gang_01"
+                    linkedChunkId = "gang_01",
+                    locationHint = mapOf("ko" to "강녕전 정면 지붕 밑 중앙 현판.", "en" to "Signboard at center beneath Gangnyeongjeon's front roof.", "ja" to "康寧殿正面の屋根下中央の扁額。", "zh" to "康宁殿正面屋檐下中央的匾额。")
                 ),
                 SubElement(
                     id = "gang_ondol",
                     displayName = mapOf("ko" to "온돌 아궁이", "en" to "Ondol Furnace Opening", "ja" to "オンドルの焚き口", "zh" to "暖炕灶口"),
                     visualHints = listOf("stone furnace opening at base of palace wall", "traditional underfloor heating hole in stone foundation", "small arched opening in building foundation for fire"),
-                    linkedChunkId = "gang_02"
+                    linkedChunkId = "gang_02",
+                    locationHint = mapOf("ko" to "강녕전 돌 기단 하부의 온돌 아궁이 입구.", "en" to "Ondol furnace openings at Gangnyeongjeon's foundation base.", "ja" to "康寧殿の石基壇下部のオンドルの焚き口。", "zh" to "康宁殿石基台下部的暖炕灶口。")
                 )
             ),
             coverImageAsset = "heritage/gangnyeongjeon_cover.jpg",
@@ -991,25 +1086,41 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "gyo_amisan_chimney",
                     displayName = mapOf("ko" to "아미산 굴뚝 (보물)", "en" to "Amisan Chimney (Treasure)", "ja" to "峨嵋山の煙突（宝物）", "zh" to "峨眉山烟囱（宝物）"),
                     visualHints = listOf("ornate hexagonal brick chimney with carved floral patterns", "decorative palace chimney with vine and butterfly motifs", "heritage chimney structure with tiered flower beds"),
-                    linkedChunkId = "gyo_03"
+                    linkedChunkId = "gyo_03",
+                    locationHint = mapOf("ko" to "교태전 뒤편 아미산 정원의 육각형 굴뚝 4기 (보물 제811호).", "en" to "Four hexagonal chimneys in Amisan garden behind Gyotaejeon (Treasure No. 811).", "ja" to "交泰殿の裏の峨嵋山庭園の六角形煙突4基（宝物第811号）。", "zh" to "交泰殿后峨眉山花园的四座六角形烟囱（宝物第811号）。")
                 ),
                 SubElement(
                     id = "gyo_amisan_garden",
                     displayName = mapOf("ko" to "아미산 화계 (계단식 화단)", "en" to "Amisan Terraced Garden", "ja" to "峨嵋山の花壇（段々花壇）", "zh" to "峨眉山阶梯花坛"),
                     visualHints = listOf("terraced stone flower beds behind palace building", "tiered garden with ornamental rocks and seasonal flowers", "stepped garden arrangement with stone walls behind royal hall"),
-                    linkedChunkId = "gyo_04"
+                    linkedChunkId = "gyo_04",
+                    locationHint = mapOf("ko" to "교태전 바로 뒤 계단식 화단이 있는 작은 정원.", "en" to "Small garden with tiered flower terraces directly behind Gyotaejeon.", "ja" to "交泰殿のすぐ裏、段々花壇のある庭園。", "zh" to "交泰殿正后方带有阶梯式花坛的小花园。")
                 ),
                 SubElement(
                     id = "gyo_signboard",
                     displayName = mapOf("ko" to "교태전 현판", "en" to "Gyotaejeon Signboard", "ja" to "交泰殿の扁額", "zh" to "交泰殿匾额"),
                     visualHints = listOf("large wooden sign with korean characters on queen's palace", "palace name plaque on ridgeless roof hall", "royal nameplate on queen consort's residence"),
-                    linkedChunkId = "gyo_01"
+                    linkedChunkId = "gyo_01",
+                    locationHint = mapOf("ko" to "교태전 정면 중앙 현판.", "en" to "Center front signboard of Gyotaejeon.", "ja" to "交泰殿正面中央の扁額。", "zh" to "交泰殿正面中央的匾额。")
                 ),
                 SubElement(
                     id = "gyo_ggotdam",
                     displayName = mapOf("ko" to "교태전 꽃담 (꽃무늬 담장)", "en" to "Gyotaejeon Flower Wall", "ja" to "交泰殿の花塀", "zh" to "交泰殿花墙"),
                     visualHints = listOf("palace wall decorated with floral brick patterns", "traditional korean wall with embedded flower designs", "ornamental wall with plum blossom motifs near chimney"),
-                    linkedChunkId = "gyo_03"
+                    linkedChunkId = "gyo_03",
+                    locationHint = mapOf("ko" to "교태전 주변 담장의 꽃무늬 벽돌.", "en" to "Floral-patterned bricks on walls around Gyotaejeon.", "ja" to "交泰殿周辺の塀の花柄レンガ。", "zh" to "交泰殿周围围墙上的花纹砖。")
+                ),
+                SubElement(
+                    id = "gyo_no_ridge",
+                    displayName = mapOf("ko" to "용마루 없는 교태전 지붕", "en" to "Gyotaejeon's Ridgeless Roof", "ja" to "棟のない交泰殿の屋根", "zh" to "无正脊的交泰殿屋顶"),
+                    visualHints = listOf("traditional palace roof without horizontal ridge", "smooth roof without ridge tile on top", "palace building with uniquely flat roof peak"),
+                    linkedChunkId = "gyo_02",
+                    locationHint = mapOf(
+                        "ko" to "교태전 지붕을 멀리서 보세요. 일반 전각과 달리 용마루가 없습니다. 왕비도 '용'의 반려라는 상징.",
+                        "en" to "Look at Gyotaejeon's roof from afar — no yongmaru ridge, as the queen was consort of the dragon.",
+                        "ja" to "交泰殿の屋根を遠くから見てください。龍棟がない — 王妃も「龍」の伴侶であるという象徴。",
+                        "zh" to "远观交泰殿屋顶——没有正脊，象征王妃是\"龙\"的伴侣。"
+                    )
                 )
             ),
             coverImageAsset = "heritage/gyotaejeon_cover.jpg",
@@ -1137,19 +1248,22 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "jag_sipjangsaeng",
                     displayName = mapOf("ko" to "십장생 굴뚝 (보물)", "en" to "Ten Longevity Chimney (Treasure)", "ja" to "十長生の煙突（宝物）", "zh" to "十长生烟囱（宝物）"),
                     visualHints = listOf("ornate brick chimney with carved longevity symbols", "chimney decorated with sun mountain crane deer turtle carvings", "intricately carved palace chimney on western wall"),
-                    linkedChunkId = "jag_03"
+                    linkedChunkId = "jag_03",
+                    locationHint = mapOf("ko" to "자경전 북쪽 담장의 십장생 굴뚝 (보물 제810호).", "en" to "Ten Longevity chimney on Jagyeongjeon's north wall (Treasure No. 810).", "ja" to "慈慶殿の北側の塀の十長生煙突（宝物第810号）。", "zh" to "慈庆殿北侧围墙上的十长生烟囱（宝物第810号）。")
                 ),
                 SubElement(
                     id = "jag_ggotdam",
                     displayName = mapOf("ko" to "자경전 꽃담", "en" to "Jagyeongjeon Flower Wall", "ja" to "慈慶殿の花塀", "zh" to "慈庆殿花墙"),
                     visualHints = listOf("palace wall with colorful floral brick patterns", "decorative wall with plum blossom and butterfly motifs", "traditional korean flower wall with bat and swastika carvings"),
-                    linkedChunkId = "jag_04"
+                    linkedChunkId = "jag_04",
+                    locationHint = mapOf("ko" to "자경전 주변의 화려한 꽃담 장식.", "en" to "Elaborate flower wall decorations around Jagyeongjeon.", "ja" to "慈慶殿周辺の華やかな花塀装飾。", "zh" to "慈庆殿周围华丽的花墙装饰。")
                 ),
                 SubElement(
                     id = "jag_signboard",
                     displayName = mapOf("ko" to "자경전 현판", "en" to "Jagyeongjeon Signboard", "ja" to "慈慶殿の扁額", "zh" to "慈庆殿匾额"),
                     visualHints = listOf("large wooden sign with korean characters on L-shaped palace hall", "palace name plaque on queen dowager's residence", "nameplate on traditional korean palace building"),
-                    linkedChunkId = "jag_01"
+                    linkedChunkId = "jag_01",
+                    locationHint = mapOf("ko" to "자경전 정면 중앙의 현판.", "en" to "Jagyeongjeon's center front signboard.", "ja" to "慈慶殿正面中央の扁額。", "zh" to "慈庆殿正面中央的匾额。")
                 )
             ),
             coverImageAsset = "heritage/jagyeongjeon_cover.jpg",
@@ -1277,13 +1391,15 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "hyang_chwihyanggyo",
                     displayName = mapOf("ko" to "취향교 (나무 다리)", "en" to "Chwihyanggyo Bridge", "ja" to "醉香橋（木の橋）", "zh" to "醉香桥（木桥）"),
                     visualHints = listOf("wooden bridge over pond leading to hexagonal pavilion", "traditional korean wooden bridge crossing lotus pond", "curved wooden walkway over water to island pavilion"),
-                    linkedChunkId = "hyang_02"
+                    linkedChunkId = "hyang_02",
+                    locationHint = mapOf("ko" to "향원지 북쪽에서 향원정으로 가는 나무 다리.", "en" to "Wooden bridge from north side of Hyangwonji to the pavilion.", "ja" to "香遠池の北側から香遠亭への木造橋。", "zh" to "香远池北侧通往香远亭的木桥。")
                 ),
                 SubElement(
                     id = "hyang_pond",
                     displayName = mapOf("ko" to "향원지 (연못)", "en" to "Hyangwonji Pond", "ja" to "香遠池", "zh" to "香远池"),
                     visualHints = listOf("large palace pond with hexagonal pavilion in center", "lotus pond reflecting pavilion and sky", "rectangular pond surrounding island with pavilion"),
-                    linkedChunkId = "hyang_03"
+                    linkedChunkId = "hyang_03",
+                    locationHint = mapOf("ko" to "향원정이 떠 있는 사각형 연못 주변을 걷기.", "en" to "Walk around the rectangular pond surrounding Hyangwonjeong.", "ja" to "香遠亭が浮かぶ四角い池の周りを散策。", "zh" to "环绕香远亭所在的方形池塘漫步。")
                 )
             ),
             coverImageAsset = "heritage/hyangwonjeong_cover.jpg",
@@ -1411,19 +1527,34 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "geon_jangandang",
                     displayName = mapOf("ko" to "장안당 (고종 거처)", "en" to "Jangandang (King's Quarters)", "ja" to "長安堂（高宗の居所）", "zh" to "长安堂（高宗居所）"),
                     visualHints = listOf("traditional korean palace building in rear garden area", "king's private residence hall with open courtyard", "wooden palace hall with simple elegant design"),
-                    linkedChunkId = "geon_02"
+                    linkedChunkId = "geon_02",
+                    locationHint = mapOf("ko" to "건청궁 내 고종 거처 장안당, 민가풍 건축.", "en" to "Jangandang — King Gojong's residence in private-house style.", "ja" to "乾清宮の長安堂 — 高宗の居所、民家風。", "zh" to "乾清宫内高宗居所长安堂，民居风建筑。")
                 ),
                 SubElement(
                     id = "geon_gonnyeonghap",
                     displayName = mapOf("ko" to "곤녕합 (명성황후 거처)", "en" to "Gonnyeonghap (Empress's Quarters)", "ja" to "坤寧閤（明成皇后の居所）", "zh" to "坤宁阁（明成皇后居所）"),
                     visualHints = listOf("empress residence building with memorial sign", "palace hall with historical significance memorial", "traditional korean building with somber memorial plaque"),
-                    linkedChunkId = "geon_03"
+                    linkedChunkId = "geon_03",
+                    locationHint = mapOf("ko" to "건청궁 내 곤녕합 — 명성황후 거처, 을미사변 현장.", "en" to "Gonnyeonghap — Empress Myeongseong's residence / Eulmi Incident site.", "ja" to "坤寧閤 — 明成皇后の居所、乙未事変の現場。", "zh" to "坤宁阁——明成皇后居所，乙未事变现场。")
                 ),
                 SubElement(
                     id = "geon_signboard",
                     displayName = mapOf("ko" to "건청궁 현판", "en" to "Geoncheongung Signboard", "ja" to "乾清宮の扁額", "zh" to "乾清宫匾额"),
                     visualHints = listOf("palace name plaque on rear garden palace complex", "wooden sign with Korean characters on king's private palace", "nameplate on palace within palace compound"),
-                    linkedChunkId = "geon_01"
+                    linkedChunkId = "geon_01",
+                    locationHint = mapOf("ko" to "건청궁 정문 위 현판.", "en" to "Signboard above Geoncheongung's main gate.", "ja" to "乾清宮正門上の扁額。", "zh" to "乾清宫正门上的匾额。")
+                ),
+                SubElement(
+                    id = "geon_electric_light",
+                    displayName = mapOf("ko" to "최초의 전등 (기념 표지)", "en" to "First Electric Light Marker", "ja" to "韓国初の電灯（記念標）", "zh" to "韩国最早电灯纪念碑"),
+                    visualHints = listOf("information marker about electric lighting", "historical plaque about 1887 Korea's first electric light", "memorial sign explaining early electrification"),
+                    linkedChunkId = "geon_04",
+                    locationHint = mapOf(
+                        "ko" to "건청궁 경내에서 1887년 한국 최초 전등 설치를 기념하는 표지판을 찾아보세요.",
+                        "en" to "Find the marker in Geoncheongung grounds commemorating Korea's first electric light installation in 1887.",
+                        "ja" to "乾清宮の敷地内で1887年の韓国初の電灯設置を記念する案内板を探してください。",
+                        "zh" to "在乾清宫院内寻找纪念1887年韩国首盏电灯安装的标识牌。"
+                    )
                 )
             ),
             coverImageAsset = "heritage/geoncheongung_cover.jpg",
@@ -1551,19 +1682,22 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "jib_parujeong",
                     displayName = mapOf("ko" to "팔우정 (팔각정)", "en" to "Parujeong (Octagonal Pavilion)", "ja" to "八隅亭（八角亭）", "zh" to "八隅亭（八角亭）"),
                     visualHints = listOf("octagonal two-story Chinese-style pavilion connected to library", "eight-sided wooden tower building with ornate decoration", "unique octagonal structure next to palace library"),
-                    linkedChunkId = "jib_04"
+                    linkedChunkId = "jib_04",
+                    locationHint = mapOf("ko" to "집옥재 왼쪽 2층 팔각형 팔우정.", "en" to "Two-story octagonal Parujeong connected to the left of Jibokjae.", "ja" to "集玉斎の左の2階建て八角形八隅亭。", "zh" to "集玉斋左侧的两层八角形八隅亭。")
                 ),
                 SubElement(
                     id = "jib_signboard",
                     displayName = mapOf("ko" to "집옥재 현판", "en" to "Jibokjae Signboard", "ja" to "集玉斎の扁額", "zh" to "集玉斋匾额"),
                     visualHints = listOf("Chinese-style palace name plaque with ornate decoration", "nameplate on brick-and-wood Chinese-style palace building", "wooden sign on unique Chinese-architecture palace hall"),
-                    linkedChunkId = "jib_01"
+                    linkedChunkId = "jib_01",
+                    locationHint = mapOf("ko" to "중국식 집옥재 정면 중앙 현판.", "en" to "Chinese-style Jibokjae's center front signboard.", "ja" to "中国式集玉斎正面中央の扁額。", "zh" to "中国式集玉斋正面中央的匾额。")
                 ),
                 SubElement(
                     id = "jib_glass_window",
                     displayName = mapOf("ko" to "집옥재 유리창", "en" to "Jibokjae Glass Windows", "ja" to "集玉斎のガラス窓", "zh" to "集玉斋玻璃窗"),
                     visualHints = listOf("glass windows on traditional wooden palace building", "modern glass panes in Chinese-style palace structure", "transparent windows unusual for traditional palace architecture"),
-                    linkedChunkId = "jib_03"
+                    linkedChunkId = "jib_03",
+                    locationHint = mapOf("ko" to "집옥재 벽의 유리창 (한옥에 드문 요소).", "en" to "Glass windows on Jibokjae — rare for traditional hanok.", "ja" to "集玉斎のガラス窓（韓屋では珍しい）。", "zh" to "集玉斋的玻璃窗（传统韩屋中罕见）。")
                 )
             ),
             coverImageAsset = "heritage/jibokjae_cover.jpg",
@@ -1691,13 +1825,15 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "dong_foundation",
                     displayName = mapOf("ko" to "동궁 기단 유구", "en" to "Donggung Foundation Remains", "ja" to "東宮の基壇遺構", "zh" to "东宫基台遗址"),
                     visualHints = listOf("stone foundation remains of ancient palace building", "archaeological foundation stones in palace grounds", "rectangular stone base remnants in east palace area"),
-                    linkedChunkId = "dong_02"
+                    linkedChunkId = "dong_02",
+                    locationHint = mapOf("ko" to "동궁 영역의 비현각·자선당 기단 유구.", "en" to "Foundation remains of Bihyeongak and Jaseondang in Donggung.", "ja" to "東宮エリアの丕顕閣・資善堂の基壇遺構。", "zh" to "东宫区域的丕显阁、资善堂基台遗迹。")
                 ),
                 SubElement(
                     id = "dong_signboard",
                     displayName = mapOf("ko" to "동궁 안내판", "en" to "Donggung Information Sign", "ja" to "東宮の案内板", "zh" to "东宫指示牌"),
                     visualHints = listOf("informational sign describing crown prince palace area", "heritage explanation board with historical photos", "cultural heritage information panel in palace grounds"),
-                    linkedChunkId = "dong_01"
+                    linkedChunkId = "dong_01",
+                    locationHint = mapOf("ko" to "동궁 영역의 안내판에서 세자 교육 설명 읽기.", "en" to "Read the Donggung signpost about crown prince education.", "ja" to "東宮エリアの案内板で世子教育の説明を読む。", "zh" to "阅读东宫区域说明牌上的世子教育内容。")
                 )
             ),
             coverImageAsset = "heritage/donggung_cover.jpg",
@@ -1806,7 +1942,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "tae_signboard",
                     displayName = mapOf("ko" to "태원전 현판", "en" to "Taeweonjeon Signboard", "ja" to "泰元殿の扁額", "zh" to "泰元殿匾额"),
                     visualHints = listOf("palace name plaque on solemn ceremonial hall", "wooden sign on restrained decoration palace building", "nameplate on western palace hall"),
-                    linkedChunkId = "tae_01"
+                    linkedChunkId = "tae_01",
+                    locationHint = mapOf("ko" to "경복궁 서쪽 태원전 현판 — 제례 공간.", "en" to "Taeweonjeon signboard in west Gyeongbokgung — ceremonial space.", "ja" to "景福宮西側の泰元殿の扁額 — 祭礼空間。", "zh" to "景福宫西侧泰元殿的匾额——祭礼空间。")
                 )
             ),
             coverImageAsset = "heritage/taeweonjeon_cover.jpg",
@@ -1901,7 +2038,8 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "so_agungi",
                     displayName = mapOf("ko" to "소주방 아궁이", "en" to "Royal Kitchen Furnace", "ja" to "焼厨房のかまど", "zh" to "烧厨房灶口"),
                     visualHints = listOf("traditional korean kitchen furnace with stone opening", "multiple cooking hearths side by side in palace kitchen", "stone and brick cooking stations in royal kitchen"),
-                    linkedChunkId = "so_02"
+                    linkedChunkId = "so_02",
+                    locationHint = mapOf("ko" to "강녕전/교태전 사이 소주방의 아궁이들.", "en" to "Multiple furnaces at Sojubang between Gangnyeongjeon and Gyotaejeon.", "ja" to "康寧殿/交泰殿間の焼厨房のかまど。", "zh" to "康宁殿/交泰殿之间烧厨房的灶口。")
                 )
             )
         ),
@@ -2072,13 +2210,15 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "gmun_signboard",
                     displayName = mapOf("ko" to "근정문 현판", "en" to "Geunjeongmun Signboard", "ja" to "勤政門の扁額", "zh" to "勤政门匾额"),
                     visualHints = listOf("palace gate name plaque on two-story gate", "wooden sign above main entrance to throne hall courtyard", "nameplate on imposing palace gate building"),
-                    linkedChunkId = "gmun_01"
+                    linkedChunkId = "gmun_01",
+                    locationHint = mapOf("ko" to "근정전 앞 2층 문루 정면 중앙의 근정문 현판.", "en" to "Geunjeongmun signboard at center of two-story gate tower.", "ja" to "勤政殿前の2階門楼正面中央の勤政門扁額。", "zh" to "勤政殿前二层门楼正面中央的勤政门匾额。")
                 ),
                 SubElement(
                     id = "gmun_samdo",
                     displayName = mapOf("ko" to "삼도 (세 갈래 길)", "en" to "Samdo (Three Paths)", "ja" to "三道（三つの道）", "zh" to "三道（三条路）"),
                     visualHints = listOf("three stone paths leading through palace courtyard", "central raised stone walkway flanked by two lower paths", "stone road divided into three sections in palace grounds"),
-                    linkedChunkId = "gmun_01"
+                    linkedChunkId = "gmun_01",
+                    locationHint = mapOf("ko" to "근정문 안쪽 삼도 — 가운데는 왕의 어도.", "en" to "Three paths inside Geunjeongmun — central Eodo was the king's.", "ja" to "勤政門内側の三道 — 中央は王の御道。", "zh" to "勤政门内三道——中间是国王御道。")
                 )
             ),
             coverImageAsset = "heritage/geunjeongmun_cover.jpg",
@@ -2154,13 +2294,15 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     id = "yeo_cheonrok",
                     displayName = mapOf("ko" to "천록 조각", "en" to "Cheonrok Sculpture", "ja" to "天禄の彫刻", "zh" to "天禄雕刻"),
                     visualHints = listOf("stone carved mythical deer creature on bridge railing", "auspicious beast sculpture on stone bridge balustrade", "carved stone animal figure on palace bridge"),
-                    linkedChunkId = "yeo_02"
+                    linkedChunkId = "yeo_02",
+                    locationHint = mapOf("ko" to "영제교 난간 양쪽 끝의 서수 석상.", "en" to "Mythical beast sculptures at both ends of Yeongjeogyo.", "ja" to "永済橋の欄干両端の瑞獣石像。", "zh" to "永济桥栏杆两端的瑞兽石像。")
                 ),
                 SubElement(
                     id = "yeo_geumcheon",
                     displayName = mapOf("ko" to "금천 (궁궐 개천)", "en" to "Geumcheon Stream", "ja" to "禁川（宮殿の小川）", "zh" to "禁川（宫殿小溪）"),
                     visualHints = listOf("stone-lined stream flowing under palace bridge", "narrow waterway with carved stone walls in palace grounds", "small stream with stone embankment running through palace"),
-                    linkedChunkId = "yeo_01"
+                    linkedChunkId = "yeo_01",
+                    locationHint = mapOf("ko" to "영제교 아래를 흐르는 금천 — 돌벽 조각.", "en" to "Geumcheon stream flowing under Yeongjeogyo — carved stone walls.", "ja" to "永済橋の下を流れる禁川 — 石壁彫刻。", "zh" to "流经永济桥下的禁川——石壁雕刻。")
                 )
             )
         )

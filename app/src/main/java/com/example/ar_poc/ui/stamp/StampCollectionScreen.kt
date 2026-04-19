@@ -46,6 +46,7 @@ fun StampCollectionScreen(
     heritageList: List<HeritageContent>,
     targetLanguage: String,
     getDiscoveryTime: (String) -> Long? = { null },
+    onNavigateToDetail: (heritageId: String, chunkId: String?) -> Unit = { _, _ -> },
     onClose: () -> Unit
 ) {
     var selectedHeritage by remember { mutableStateOf<HeritageContent?>(null) }
@@ -182,39 +183,81 @@ fun StampCollectionScreen(
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(heritage.subElements) { subElem ->
                             val isSubDiscovered = discoveredSubElements.contains(subElem.id)
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
-                                    .clickable(enabled = !isSubDiscovered) {
+                                    .clickable {
                                         expandedHintId = if (expandedHintId == subElem.id) null else subElem.id
                                     }
                                     .padding(12.dp)
                             ) {
-                                if (isSubDiscovered) {
-                                    val subTitle = subElem.displayName[targetLanguage] ?: subElem.displayName["en"] ?: "Detail"
-                                    Text("✨", fontSize = 24.sp, modifier = Modifier.padding(end = 12.dp))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(subTitle, color = Color.White, fontWeight = FontWeight.Bold)
-                                        Text(Strings.getStampLabels(targetLanguage).discoveredLabel, color = Color(0xFFFFD280), fontSize = 12.sp)
-                                    }
-                                } else {
-                                    Text("❓", fontSize = 24.sp, modifier = Modifier.padding(end = 12.dp).alpha(0.5f))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                            Strings.getHiddenTreasureUnknown(targetLanguage), 
-                                            color = Color.Gray
-                                        )
-                                        if (expandedHintId == subElem.id) {
-                                            val linkedChunk = heritage.chunks.find { it.chunkId == subElem.linkedChunkId }
-                                            if (linkedChunk != null) {
-                                                val chunkTitle = linkedChunk.titleMap[targetLanguage] ?: linkedChunk.title
-                                                Spacer(modifier = Modifier.height(4.dp))
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (isSubDiscovered) {
+                                        val subTitle = subElem.displayName[targetLanguage] ?: subElem.displayName["en"] ?: "Detail"
+                                        Text("✨", fontSize = 24.sp, modifier = Modifier.padding(end = 12.dp))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(subTitle, color = Color.White, fontWeight = FontWeight.Bold)
+                                            Text(Strings.getStampLabels(targetLanguage).discoveredLabel, color = Color(0xFFFFD280), fontSize = 12.sp)
+                                        }
+                                    } else {
+                                        Text("❓", fontSize = 24.sp, modifier = Modifier.padding(end = 12.dp).alpha(0.5f))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                Strings.getHiddenTreasureUnknown(targetLanguage),
+                                                color = Color.Gray,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                            val chunkTitleHint = heritage.chunks
+                                                .find { it.chunkId == subElem.linkedChunkId }
+                                                ?.let { it.titleMap[targetLanguage] ?: it.title }
+                                            if (chunkTitleHint != null) {
                                                 Text(
-                                                    text = Strings.getHintMessage(targetLanguage, chunkTitle),
-                                                    color = Color(0xFFFFD280).copy(alpha = 0.9f),
-                                                    fontSize = 12.sp
+                                                    text = Strings.getHintMessage(targetLanguage, chunkTitleHint),
+                                                    color = Color(0xFFFFD280).copy(alpha = 0.7f),
+                                                    fontSize = 11.sp
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // 확장 영역 — 위치 힌트 + 상세보기 버튼
+                                if (expandedHintId == subElem.id) {
+                                    val locHint = subElem.locationHint[targetLanguage]
+                                        ?: subElem.locationHint["ko"].orEmpty()
+                                    if (locHint.isNotBlank()) {
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Text(
+                                            text = "📍 $locHint",
+                                            color = Color(0xFFFFE0A8),
+                                            fontSize = 13.sp,
+                                            lineHeight = 18.sp,
+                                            modifier = Modifier.padding(start = 36.dp)
+                                        )
+                                    }
+                                    val chunkId = subElem.linkedChunkId
+                                    if (chunkId != null) {
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Row(modifier = Modifier.padding(start = 36.dp)) {
+                                            TextButton(
+                                                onClick = {
+                                                    onNavigateToDetail(heritage.id, chunkId)
+                                                },
+                                                colors = ButtonDefaults.textButtonColors(
+                                                    contentColor = Color(0xFF64B5F6)
+                                                ),
+                                                contentPadding = PaddingValues(0.dp)
+                                            ) {
+                                                Text(
+                                                    text = when (targetLanguage) {
+                                                        "en" -> "📖 Read the story →"
+                                                        "ja" -> "📖 解説を読む →"
+                                                        "zh" -> "📖 阅读详解 →"
+                                                        else -> "📖 자세한 설명 보기 →"
+                                                    },
+                                                    fontSize = 13.sp,
+                                                    fontWeight = FontWeight.Bold
                                                 )
                                             }
                                         }

@@ -16,10 +16,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ar_poc.Strings
 import com.example.ar_poc.domain.repository.HeritageRepository
 import com.example.ar_poc.ui.components.AssetImage
 import com.example.ar_poc.ui.components.ImageGallery
+import com.example.ar_poc.ui.quiz.QuizBottomSheet
+import com.example.ar_poc.ui.quiz.QuizResultDialog
+import com.example.ar_poc.ui.viewmodel.ARViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -27,6 +31,7 @@ fun DetailScreen(
     heritageId: String,
     chunkId: String? = null,
     targetLanguage: String = "ko",
+    viewModel: ARViewModel? = null,
     onBack: () -> Unit
 ) {
     val repository = remember { HeritageRepository() }
@@ -181,15 +186,15 @@ fun DetailScreen(
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                        
+
                         Text(
                             text = chunk.title,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
-                        
+
                         Spacer(modifier = Modifier.height(12.dp))
-                        
+
                         Text(
                             text = chunk.content,
                             style = MaterialTheme.typography.bodyLarge,
@@ -197,7 +202,106 @@ fun DetailScreen(
                         )
                     }
                 }
+
+                // ── 퀴즈 ───────────────────────────────────
+                if (viewModel != null) {
+                    DetailQuizSection(
+                        viewModel = viewModel,
+                        heritageId = heritageId,
+                        targetLanguage = targetLanguage
+                    )
+                }
             }
         }
+    }
+}
+
+/**
+ * 상세 화면 하단 퀴즈 섹션.
+ *
+ * - viewModel.hasQuiz(heritageId)가 true면 버튼 노출
+ * - 클릭 시 viewModel.requestQuiz() → pendingQuizQuestions 채워짐 → QuizBottomSheet 표시
+ * - 완료 시 markQuizCompleted() + 결과 다이얼로그
+ */
+@Composable
+private fun DetailQuizSection(
+    viewModel: ARViewModel,
+    heritageId: String,
+    targetLanguage: String
+) {
+    val pendingQuestions by viewModel.pendingQuizQuestions.collectAsStateWithLifecycle()
+    var showResult by remember { mutableStateOf<Pair<Int, Int>?>(null) }
+    // 이 전각의 퀴즈 이용 가능 여부 스냅샷 (완료 상태는 completion 후 재평가됨)
+    var completed by remember(heritageId) { mutableStateOf(false) }
+    val canTakeQuiz = remember(heritageId, completed) {
+        !completed && viewModel.hasQuiz(heritageId)
+    }
+
+    Spacer(modifier = Modifier.height(16.dp))
+    HorizontalDivider(modifier = Modifier.alpha(0.3f))
+    Spacer(modifier = Modifier.height(16.dp))
+
+    when {
+        completed -> {
+            Text(
+                text = Strings.getQuizCompletedLabel(targetLanguage),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+        canTakeQuiz -> {
+            Button(
+                onClick = { viewModel.requestQuiz(heritageId) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text(
+                    text = Strings.getQuizButtonLabel(targetLanguage),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
+        }
+        else -> {
+            Text(
+                text = Strings.getQuizUnavailableLabel(targetLanguage),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    // QuizBottomSheet (pendingQuestions가 있고 아직 결과 다이얼로그가 열리지 않은 상태)
+    if (pendingQuestions.isNotEmpty() && showResult == null) {
+        QuizBottomSheet(
+            questions = pendingQuestions,
+            targetLanguage = targetLanguage,
+            onFinish = { score, total ->
+                viewModel.markQuizCompleted(heritageId)
+                viewModel.clearPendingQuiz()
+                showResult = score to total
+                completed = true
+            },
+            onDismiss = {
+                viewModel.clearPendingQuiz()
+            }
+        )
+    }
+
+    // 결과 다이얼로그
+    showResult?.let { (score, total) ->
+        QuizResultDialog(
+            score = score,
+            total = total,
+            targetLanguage = targetLanguage,
+            onDismiss = { showResult = null }
+        )
     }
 }

@@ -54,5 +54,11 @@ data class SubElement(
     val id: String,
     val displayName: Map<String, String>,
     val visualHints: List<String>,   // these go into the Gemini candidate list
-    val linkedChunkId: String? = null
+    val linkedChunkId: String? = null,
+    /**
+     * 어디에서 이 보물을 찾을 수 있는지에 대한 다국어 힌트.
+     * 예: "근정전 내부 천장 중앙을 올려다보세요" (칠조룡)
+     * StampCollectionScreen에서 미발견 상태일 때 사용자에게 보여준다.
+     */
+    val locationHint: Map<String, String> = emptyMap()
 )

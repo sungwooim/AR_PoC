@@ -89,6 +89,7 @@ fun NavGraph(
                 heritageId = heritageId,
                 chunkId = chunkId,
                 targetLanguage = selectedLanguage,
+                viewModel = arViewModel,
                 onBack = {
                     navController.popBackStack()
                 }

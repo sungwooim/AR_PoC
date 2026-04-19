@@ -1,7 +1,7 @@
 # AR_POC Project Map
 > **목적**: 코드 수정 시 이 파일만 참조해서 불필요한 파일 full-read를 줄임
 > **업데이트**: 파일 구조/시그니처 변경 시 반드시 이 파일도 갱신
-> **최종 업데이트**: 2026-04-19 (갤러리 60장 + POI 이미지 4장, PDF 공식 청크, PoiInfoDialog 이미지)
+> **최종 업데이트**: 2026-04-19 (DetailScreen 퀴즈 복원, SubElement locationHint + 누락 보물 추가, Stamp→Detail 이동)
 
 ---
 

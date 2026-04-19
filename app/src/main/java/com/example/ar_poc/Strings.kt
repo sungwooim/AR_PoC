@@ -413,5 +413,29 @@ object Strings {
         "zh" -> "$title，未发现"
         else -> "$title, 미발견"
     }
+
+    // ──────────────────────────────────────────────
+    // 11. Quiz (퀴즈 관련 라벨)
+    // ──────────────────────────────────────────────
+    fun getQuizButtonLabel(lang: String): String = when (lang) {
+        "en" -> "🧩 Take the Quiz"
+        "ja" -> "🧩 クイズに挑戦"
+        "zh" -> "🧩 挑战问答"
+        else -> "🧩 퀴즈 풀기"
+    }
+
+    fun getQuizCompletedLabel(lang: String): String = when (lang) {
+        "en" -> "✅ Quiz Completed"
+        "ja" -> "✅ クイズ完了"
+        "zh" -> "✅ 问答已完成"
+        else -> "✅ 퀴즈 완료"
+    }
+
+    fun getQuizUnavailableLabel(lang: String): String = when (lang) {
+        "en" -> "No quiz available"
+        "ja" -> "クイズはありません"
+        "zh" -> "暂无问答"
+        else -> "퀴즈 없음"
+    }
 }
 

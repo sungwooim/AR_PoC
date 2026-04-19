@@ -375,6 +375,10 @@ fun CameraScreen(
                 heritageList = viewModel.heritageList,
                 targetLanguage = targetLanguage,
                 getDiscoveryTime = { id -> viewModel.getDiscoveryTime(id) },
+                onNavigateToDetail = { heritageId, chunkId ->
+                    showStampScreen = false
+                    onNavigateToDetail(heritageId, chunkId)
+                },
                 onClose = { showStampScreen = false }
             )
         }
