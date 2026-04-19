@@ -355,13 +355,24 @@ fun CameraScreen(
 
         // 폰 눕힘 감지 → 실제 위치가 표시되는 지도
         if (showFlatMap) {
+            val selectedCourse by viewModel.selectedTourCourse.collectAsStateWithLifecycle()
+            val visitedOrders by viewModel.visitedWaypointOrders.collectAsStateWithLifecycle()
+            val nextWaypoint by viewModel.nextCourseWaypoint.collectAsStateWithLifecycle()
             com.example.ar_poc.ui.map.MapScreen(
                 currentLocation = currentLocation,
                 discoveredHeritages = discoveredHeritages,
                 poiList = viewModel.poiList,
                 azimuth = azimuth,
                 targetLanguage = targetLanguage,
+                tourCourses = viewModel.tourCourses,
+                selectedCourse = selectedCourse,
+                visitedOrders = visitedOrders,
+                nextWaypointOrder = nextWaypoint?.order,
+                onSelectCourse = { viewModel.selectTourCourse(it) },
+                onClearCourse = { viewModel.clearTourCourse() },
+                onToggleWaypointVisited = { viewModel.toggleWaypointVisited(it) },
                 onPoiClick = { id -> onNavigateToDetail(id, null) },
+                onNavigateToDetail = { hid, cid -> onNavigateToDetail(hid, cid) },
                 onClose = { viewModel.toggleArOverlay() }
             )
         }

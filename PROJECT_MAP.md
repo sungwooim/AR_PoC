@@ -1,7 +1,7 @@
 # AR_POC Project Map
 > **목적**: 코드 수정 시 이 파일만 참조해서 불필요한 파일 full-read를 줄임
 > **업데이트**: 파일 구조/시그니처 변경 시 반드시 이 파일도 갱신
-> **최종 업데이트**: 2026-04-19 (DetailScreen 퀴즈 복원, SubElement locationHint + 누락 보물 추가, Stamp→Detail 이동)
+> **최종 업데이트**: 2026-04-19 (관람 코스 40/60/90분, Polyline 직접 그리기, 10m 자동 체크, 지도 FAB)
 
 ---
 

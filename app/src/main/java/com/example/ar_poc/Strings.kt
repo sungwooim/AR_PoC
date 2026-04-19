@@ -437,5 +437,88 @@ object Strings {
         "zh" -> "暂无问答"
         else -> "퀴즈 없음"
     }
+
+    // ──────────────────────────────────────────────
+    // 12. Tour Course (관람 코스)
+    // ──────────────────────────────────────────────
+    fun getCourseButtonLabel(lang: String): String = when (lang) {
+        "en" -> "🗺️ Tour Courses"
+        "ja" -> "🗺️ 観覧コース"
+        "zh" -> "🗺️ 游览路线"
+        else -> "🗺️ 관람 코스"
+    }
+
+    fun getCourseSelectTitle(lang: String): String = when (lang) {
+        "en" -> "Choose a Tour Course"
+        "ja" -> "観覧コースを選択"
+        "zh" -> "选择游览路线"
+        else -> "관람 코스 선택"
+    }
+
+    fun getCourseStopsLabel(lang: String, count: Int): String = when (lang) {
+        "en" -> "$count stops"
+        "ja" -> "${count}か所"
+        "zh" -> "${count}处"
+        else -> "${count}곳 방문"
+    }
+
+    fun getCourseDistanceLabel(lang: String, meters: Int): String {
+        val km = meters / 1000.0
+        return when (lang) {
+            "en" -> "approx. ${"%.1f".format(km)} km"
+            "ja" -> "約${"%.1f".format(km)} km"
+            "zh" -> "约${"%.1f".format(km)} km"
+            else -> "약 ${"%.1f".format(km)} km"
+        }
+    }
+
+    fun getCourseCurrentLabel(lang: String): String = when (lang) {
+        "en" -> "Current Stop"
+        "ja" -> "現在地"
+        "zh" -> "当前位置"
+        else -> "현재 지점"
+    }
+
+    fun getCourseCompletedLabel(lang: String): String = when (lang) {
+        "en" -> "Visited"
+        "ja" -> "訪問済み"
+        "zh" -> "已访问"
+        else -> "방문 완료"
+    }
+
+    fun getCourseNextLabel(lang: String): String = when (lang) {
+        "en" -> "Next"
+        "ja" -> "次へ"
+        "zh" -> "下一个"
+        else -> "다음"
+    }
+
+    fun getCoursePendingLabel(lang: String, dist: Int): String = when (lang) {
+        "en" -> "${dist}m ahead"
+        "ja" -> "${dist}m先"
+        "zh" -> "前方${dist}米"
+        else -> "${dist}m 남음"
+    }
+
+    fun getCourseStopButtonLabel(lang: String): String = when (lang) {
+        "en" -> "Stop Course"
+        "ja" -> "コース終了"
+        "zh" -> "结束路线"
+        else -> "코스 종료"
+    }
+
+    fun getCourseAllDoneLabel(lang: String): String = when (lang) {
+        "en" -> "🎉 Course complete! Well done."
+        "ja" -> "🎉 コース完了！お疲れ様でした。"
+        "zh" -> "🎉 路线完成！辛苦了。"
+        else -> "🎉 코스 완료! 수고하셨어요."
+    }
+
+    fun getCourseProgressLabel(lang: String, done: Int, total: Int): String = when (lang) {
+        "en" -> "$done / $total visited"
+        "ja" -> "$done / $total 訪問"
+        "zh" -> "已访问 $done / $total"
+        else -> "$done / $total 방문"
+    }
 }
 

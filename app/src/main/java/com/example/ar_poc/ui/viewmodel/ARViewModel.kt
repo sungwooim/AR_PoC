@@ -15,7 +15,10 @@ import com.example.ar_poc.di.DevModeManager
 import com.example.ar_poc.domain.HeritageRecognitionPipeline
 import com.example.ar_poc.domain.coordinator.NavigationCoordinator
 import com.example.ar_poc.domain.coordinator.QuizCoordinator
+import com.example.ar_poc.domain.coordinator.TourCourseCoordinator
+import com.example.ar_poc.domain.coordinator.TourProgressState
 import com.example.ar_poc.domain.coordinator.TtsController
+import com.example.ar_poc.domain.model.TourCourse
 import com.example.ar_poc.domain.model.HeritageContent
 import com.example.ar_poc.domain.model.Poi
 import com.example.ar_poc.domain.model.QuizQuestion
@@ -61,6 +64,7 @@ class ARViewModel @Inject constructor(
     private val ttsController: TtsController,
     private val quizCoordinator: QuizCoordinator,
     private val navigationCoordinator: NavigationCoordinator,
+    private val tourCourseCoordinator: TourCourseCoordinator,
     private val spatialContextProvider: SpatialContextProvider,
 ) : ViewModel() {
     var targetLanguage: String = "ko"
@@ -188,6 +192,26 @@ class ARViewModel @Inject constructor(
     fun getDiscoveryTime(heritageId: String): Long? = quizCoordinator.getDiscoveryTime(heritageId)
     fun requestQuiz(heritageId: String) = quizCoordinator.requestQuiz(heritageId)
     fun hasQuiz(heritageId: String): Boolean = quizCoordinator.hasQuiz(heritageId)
+
+    // ─────────────────────────────────────────────────────────────────────
+    // Tour Course (40/60/90분 관람 코스)
+    // ─────────────────────────────────────────────────────────────────────
+
+    val tourCourses: List<TourCourse> = tourCourseCoordinator.getAllCourses()
+    val selectedTourCourse: StateFlow<TourCourse?> = tourCourseCoordinator.selectedCourse
+    val visitedWaypointOrders: StateFlow<Set<Int>> = tourCourseCoordinator.visitedOrders
+
+    /** GPS-driven auto-check + next-waypoint + progress% + completion. */
+    private val tourProgress: TourProgressState =
+        tourCourseCoordinator.bindProgress(spatialContextProvider, viewModelScope)
+
+    val nextCourseWaypoint = tourProgress.nextWaypoint
+    val courseProgressPercent = tourProgress.progressPercent
+    val courseCompleted = tourProgress.isCompleted
+
+    fun selectTourCourse(courseId: String) = tourCourseCoordinator.selectCourse(courseId)
+    fun clearTourCourse() = tourCourseCoordinator.clearSelection()
+    fun toggleWaypointVisited(order: Int) = tourCourseCoordinator.toggleVisited(order)
 
     // ─────────────────────────────────────────────────────────────────────
     // Recognition Flow (ARViewModel 자체 책임 — UI 상태 전이)

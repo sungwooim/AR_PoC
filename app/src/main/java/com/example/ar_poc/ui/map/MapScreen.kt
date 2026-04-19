@@ -1,6 +1,9 @@
 package com.example.ar_poc.ui.map
 
+import android.content.Context
 import android.location.Location
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -17,15 +20,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import com.example.ar_poc.Strings
+import com.example.ar_poc.domain.model.CourseWaypoint
 import com.example.ar_poc.domain.model.Poi
 import com.example.ar_poc.domain.model.PoiType
+import com.example.ar_poc.domain.model.TourCourse
+import com.example.ar_poc.domain.spatial.SpatialCalculator
 import com.example.ar_poc.ui.ar.PoiInfoDialog
 
 @Composable
@@ -35,10 +44,33 @@ fun MapScreen(
     poiList: List<Poi>,
     azimuth: Float = 0f,
     targetLanguage: String = "ko",
+    tourCourses: List<TourCourse> = emptyList(),
+    selectedCourse: TourCourse? = null,
+    visitedOrders: Set<Int> = emptySet(),
+    nextWaypointOrder: Int? = null,
+    onSelectCourse: (String) -> Unit = {},
+    onClearCourse: () -> Unit = {},
+    onToggleWaypointVisited: (Int) -> Unit = {},
     onPoiClick: (String) -> Unit = {},
+    onNavigateToDetail: (heritageId: String, chunkId: String?) -> Unit = { _, _ -> },
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val isOnline = remember { isNetworkAvailable(context) }
+
+    // 오프라인 → 정적 fallback 지도
+    if (!isOnline) {
+        OfflineMapFallback(
+            currentLocation = currentLocation,
+            poiList = poiList,
+            discoveredHeritages = discoveredHeritages,
+            targetLanguage = targetLanguage,
+            onClose = onClose,
+        )
+        return
+    }
+
     val gyeongbokgungCenter = LatLng(37.5796, 126.9770)
 
     // 방위각 부드럽게 보간
@@ -181,6 +213,45 @@ fun MapScreen(
                     }
                 }
             }
+
+            // ── 코스 Polyline + 번호 마커 ─────────────────────────────────
+            selectedCourse?.let { course ->
+                // 전체 waypoint 경로 (경유점 포함)를 한 선으로 연결
+                val pathPoints = course.waypoints
+                    .sortedBy { it.order }
+                    .map { LatLng(it.latitude, it.longitude) }
+                if (pathPoints.size >= 2) {
+                    Polyline(
+                        points = pathPoints,
+                        color = Color(0xFFB8860B),   // 전통 단청 금박색
+                        width = 10f,
+                        jointType = com.google.android.gms.maps.model.JointType.ROUND,
+                        zIndex = 5f
+                    )
+                }
+                // 번호 마커: stop waypoint만 표시 (경유점 제외)
+                course.stops.forEach { wp ->
+                    val visited = wp.order in visitedOrders
+                    val isNext = wp.order == nextWaypointOrder
+                    MarkerComposable(
+                        keys = arrayOf("wp_${course.id}_${wp.order}", visited, isNext, targetLanguage),
+                        state = MarkerState(position = LatLng(wp.latitude, wp.longitude)),
+                        onClick = {
+                            val hid = wp.heritageId
+                            if (hid != null) onNavigateToDetail(hid, null)
+                            true
+                        },
+                        zIndex = 8f
+                    ) {
+                        CourseWaypointMarker(
+                            order = wp.order,
+                            name = wp.localizedName(targetLanguage),
+                            visited = visited,
+                            isNext = isNext
+                        )
+                    }
+                }
+            }
         }
 
         // Header
@@ -259,6 +330,68 @@ fun MapScreen(
             )
         }
 
+        // ── 관람 코스 FAB ───────────────────────────────────────────────
+        var showCourseSelection by remember { mutableStateOf(false) }
+        var showWaypointsList by remember { mutableStateOf(false) }
+
+        FloatingActionButton(
+            onClick = {
+                if (selectedCourse != null) showWaypointsList = true
+                else showCourseSelection = true
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 16.dp, bottom = 160.dp),
+            containerColor = if (selectedCourse != null) Color(0xFFB8860B) else Color.White,
+            contentColor = if (selectedCourse != null) Color.White else Color(0xFFB8860B),
+            elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 6.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+            ) {
+                Text(
+                    text = if (selectedCourse != null) {
+                        "🗺️ ${selectedCourse.durationMinutes}${when(targetLanguage){"en"->"min";"ja"->"分";"zh"->"分";else->"분"}}"
+                    } else {
+                        Strings.getCourseButtonLabel(targetLanguage)
+                    },
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+
+        if (showCourseSelection) {
+            CourseSelectionBottomSheet(
+                courses = tourCourses,
+                targetLanguage = targetLanguage,
+                onSelect = { courseId ->
+                    onSelectCourse(courseId)
+                    showCourseSelection = false
+                    showWaypointsList = true
+                },
+                onDismiss = { showCourseSelection = false }
+            )
+        }
+
+        if (showWaypointsList && selectedCourse != null) {
+            CourseWaypointsSheet(
+                course = selectedCourse,
+                visitedOrders = visitedOrders,
+                nextWaypointOrder = nextWaypointOrder,
+                currentLocation = currentLocation,
+                targetLanguage = targetLanguage,
+                onNavigateToDetail = onNavigateToDetail,
+                onStopCourse = {
+                    onClearCourse()
+                    showWaypointsList = false
+                },
+                onDismiss = { showWaypointsList = false }
+            )
+        }
+
         // 일반 POI 정보 팝업
         selectedInfoPoi?.let { poi ->
             PoiInfoDialog(
@@ -331,6 +464,199 @@ private fun PoiMapLabel(
                 .size(width = 10.dp, height = 6.dp)
                 .background(bgColor.copy(alpha = 0.92f),
                     RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp))
+        )
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 오프라인 Fallback 지도
+// Google Maps 타일을 로드할 수 없을 때 POI 리스트를 텍스트로 표시
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+private fun OfflineMapFallback(
+    currentLocation: Location?,
+    poiList: List<Poi>,
+    discoveredHeritages: Set<String>,
+    targetLanguage: String,
+    onClose: () -> Unit,
+) {
+    val offlineTitle = when (targetLanguage) {
+        "en" -> "Offline Map"
+        "ja" -> "オフラインマップ"
+        "zh" -> "离线地图"
+        else -> "오프라인 지도"
+    }
+    val offlineMsg = when (targetLanguage) {
+        "en" -> "Internet is required for the map.\nHere are nearby points of interest:"
+        "ja" -> "地図にはインターネットが必要です。\n付近のスポット:"
+        "zh" -> "地图需要互联网。\n以下是附近的景点:"
+        else -> "지도를 보려면 인터넷이 필요합니다.\n주변 관심 지점 목록:"
+    }
+
+    // POI를 현재 위치 기준 거리순 정렬 (위치 없으면 원래 순서)
+    val sortedPois = remember(currentLocation, poiList) {
+        if (currentLocation != null) {
+            poiList
+                .filter { it.latitude != 0.0 }
+                .map { poi ->
+                    poi to SpatialCalculator.calcDistanceM(
+                        currentLocation.latitude, currentLocation.longitude,
+                        poi.latitude, poi.longitude
+                    )
+                }
+                .sortedBy { it.second }
+        } else {
+            poiList.filter { it.latitude != 0.0 }.map { it to 0f }
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF1A1A2E))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 60.dp, start = 20.dp, end = 20.dp, bottom = 20.dp)
+        ) {
+            // 헤더
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "🗺️ $offlineTitle",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                IconButton(onClick = onClose) {
+                    Icon(Icons.Default.Close, contentDescription = "닫기", tint = Color.White)
+                }
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = offlineMsg,
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 14.sp,
+                lineHeight = 20.sp
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            // POI 리스트
+            androidx.compose.foundation.lazy.LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(sortedPois.size) { index ->
+                    val (poi, distance) = sortedPois[index]
+                    val isDiscovered = poi.id in discoveredHeritages
+                    val title = poi.localizedTitle(targetLanguage)
+                    val distText = if (distance > 0f) "${distance.toInt()}m" else ""
+                    val bgColor = when {
+                        poi.linkedHeritage != null && isDiscovered -> Color(0xFF2E1A00)
+                        poi.linkedHeritage != null -> Color(0xFF1A0000)
+                        else -> Color(0xFF0A1525)
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(bgColor, RoundedCornerShape(12.dp))
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = if (isDiscovered) "✨" else poi.type.icon,
+                                fontSize = 18.sp
+                            )
+                            Spacer(Modifier.width(12.dp))
+                            Column {
+                                Text(
+                                    text = title,
+                                    color = Color.White,
+                                    fontSize = 15.sp,
+                                    fontWeight = if (poi.linkedHeritage != null) FontWeight.Bold else FontWeight.Normal
+                                )
+                                if (poi.linkedHeritage == null) {
+                                    Text(
+                                        text = poi.type.labelKo,
+                                        color = Color.White.copy(alpha = 0.5f),
+                                        fontSize = 11.sp
+                                    )
+                                }
+                            }
+                        }
+                        if (distText.isNotEmpty()) {
+                            Text(
+                                text = distText,
+                                color = Color.White.copy(alpha = 0.5f),
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun isNetworkAvailable(context: Context): Boolean {
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        ?: return false
+    val network = cm.activeNetwork ?: return false
+    val caps = cm.getNetworkCapabilities(network) ?: return false
+    return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+}
+
+/**
+ * 코스 번호 마커.
+ *
+ * - `isNext == true` → 빨간색 테두리 + 펄스 효과로 "다음 방문지" 강조
+ * - `visited == true` → ✓ 표시로 완료된 방문지 표시
+ * - 그 외 → 금색 배지 + 순서 번호
+ */
+@Composable
+private fun CourseWaypointMarker(
+    order: Int,
+    name: String,
+    visited: Boolean,
+    isNext: Boolean
+) {
+    val bg = when {
+        visited -> Color(0xFF2E7D32)      // 초록
+        isNext -> Color(0xFFD32F2F)       // 빨강 (강조)
+        else -> Color(0xFFB8860B)         // 금박
+    }
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier = Modifier
+                .size(34.dp)
+                .background(bg, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            if (visited) {
+                Text("✓", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            } else {
+                Text("$order", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = name,
+            fontSize = 9.sp,
+            color = if (isNext) Color(0xFFD32F2F) else Color.Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .background(Color.White.copy(alpha = 0.95f), RoundedCornerShape(4.dp))
+                .padding(horizontal = 4.dp, vertical = 1.dp)
         )
     }
 }
