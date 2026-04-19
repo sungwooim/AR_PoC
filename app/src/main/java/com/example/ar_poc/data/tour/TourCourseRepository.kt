@@ -23,9 +23,9 @@ class TourCourseRepository @Inject constructor() {
     private val gyeonghoeruLat = 37.5800
     private val gyeonghoeruLng = 126.9749
 
-    // 수정전: 연못 남쪽, 근정전 서쪽
-    private val sujeongjeonLat = 37.5793
-    private val sujeongjeonLng = 126.9756
+    // 수정전: 구글맵 URL 기반 정확한 좌표 (maps.app.goo.gl/GmCmDZYLm1sgM6Kb6)
+    private val sujeongjeonLat = 37.578997
+    private val sujeongjeonLng = 126.975959
 
     private val courses: List<TourCourse> = listOf(
         // ═══════════════════════════════════════════════════════════════
@@ -42,10 +42,10 @@ class TourCourseRepository @Inject constructor() {
                 "zh" to "40分钟 精华路线"
             ),
             descriptionMap = mapOf(
-                "ko" to "근정전·수정전·경회루·사정전을 짧은 시간에 둘러보는 핵심 4곳 코스.",
-                "en" to "A quick tour of the 4 essentials: Geunjeongjeon, Sujeongjeon, Gyeonghoeru, Sajeongjeon.",
-                "ja" to "勤政殿・修政殿・慶会楼・思政殿の4か所を短時間で巡るコース。",
-                "zh" to "快速游览勤政殿、修政殿、庆会楼、思政殿四处精华。"
+                "ko" to "1.근정전 → 2.수정전 → 3.경회루 → 4.사정전",
+                "en" to "1.Geunjeongjeon → 2.Sujeongjeon → 3.Gyeonghoeru → 4.Sajeongjeon",
+                "ja" to "1.勤政殿 → 2.修政殿 → 3.慶会楼 → 4.思政殿",
+                "zh" to "1.勤政殿 → 2.修政殿 → 3.庆会楼 → 4.思政殿"
             ),
             approxDistanceM = 500,
             waypoints = listOf(
@@ -78,10 +78,10 @@ class TourCourseRepository @Inject constructor() {
                 "zh" to "60分钟 标准路线"
             ),
             descriptionMap = mapOf(
-                "ko" to "40분 코스에 강녕전·교태전·흥복전·동궁·소주방·자경전을 더한 표준 10곳 코스.",
-                "en" to "Standard 10-stop tour adding Gangnyeongjeon, Gyotaejeon, Heungbokjeon, Donggung, Sojubang, Jagyeongjeon.",
-                "ja" to "40分コースに康寧殿・交泰殿・興福殿・東宮・焼厨房・慈慶殿を加えた標準10か所コース。",
-                "zh" to "在40分钟路线上增加康宁殿、交泰殿、兴福殿、东宫、烧厨房、慈庆殿的10处标准路线。"
+                "ko" to "1.근정전 → 2.수정전 → 3.경회루 → 4.사정전 → 5.강녕전 → 6.교태전 → 7.흥복전 → 8.동궁 → 9.소주방 → 10.자경전",
+                "en" to "1.Geunjeongjeon → 2.Sujeongjeon → 3.Gyeonghoeru → 4.Sajeongjeon → 5.Gangnyeongjeon → 6.Gyotaejeon → 7.Heungbokjeon → 8.Donggung → 9.Sojubang → 10.Jagyeongjeon",
+                "ja" to "1.勤政殿 → 2.修政殿 → 3.慶会楼 → 4.思政殿 → 5.康寧殿 → 6.交泰殿 → 7.興福殿 → 8.東宮 → 9.焼厨房 → 10.慈慶殿",
+                "zh" to "1.勤政殿 → 2.修政殿 → 3.庆会楼 → 4.思政殿 → 5.康宁殿 → 6.交泰殿 → 7.兴福殿 → 8.东宫 → 9.烧厨房 → 10.慈庆殿"
             ),
             approxDistanceM = 1100,
             waypoints = listOf(
@@ -126,10 +126,10 @@ class TourCourseRepository @Inject constructor() {
                 "zh" to "90分钟 全程路线"
             ),
             descriptionMap = mapOf(
-                "ko" to "경복궁 14곳을 모두 둘러보는 완주 코스. 함화당·집경당, 향원정·건청궁, 집옥재, 태원전까지 후원 영역 포함.",
-                "en" to "Complete 14-stop tour including the rear garden (Hamhwadang-Jipgyeongdang, Hyangwonjeong-Geoncheongung, Jibokjae, Taeweonjeon).",
-                "ja" to "景福宮14か所を全て巡る完走コース。咸和堂・緝敬堂、香遠亭・乾清宮、集玉斎、泰元殿の後苑エリアまで含む。",
-                "zh" to "游览景福宫全部14处的完整路线。包括咸和堂·缉敬堂、香远亭·乾清宫、集玉斋、泰元殿等后苑区域。"
+                "ko" to "1.근정전 → 2.수정전 → 3.경회루 → 4.사정전 → 5.강녕전 → 6.교태전 → 7.흥복전 → 8.동궁 → 9.소주방 → 10.자경전 → 11.함화당·집경당 → 12.향원정·건청궁 → 13.집옥재 → 14.태원전",
+                "en" to "1.Geunjeongjeon → 2.Sujeongjeon → 3.Gyeonghoeru → 4.Sajeongjeon → 5.Gangnyeongjeon → 6.Gyotaejeon → 7.Heungbokjeon → 8.Donggung → 9.Sojubang → 10.Jagyeongjeon → 11.Hamhwadang·Jipgyeongdang → 12.Hyangwonjeong·Geoncheongung → 13.Jibokjae → 14.Taeweonjeon",
+                "ja" to "1.勤政殿 → 2.修政殿 → 3.慶会楼 → 4.思政殿 → 5.康寧殿 → 6.交泰殿 → 7.興福殿 → 8.東宮 → 9.焼厨房 → 10.慈慶殿 → 11.咸和堂·緝敬堂 → 12.香遠亭·乾清宮 → 13.集玉斎 → 14.泰元殿",
+                "zh" to "1.勤政殿 → 2.修政殿 → 3.庆会楼 → 4.思政殿 → 5.康宁殿 → 6.交泰殿 → 7.兴福殿 → 8.东宫 → 9.烧厨房 → 10.慈庆殿 → 11.咸和堂·缉敬堂 → 12.香远亭·乾清宫 → 13.集玉斋 → 14.泰元殿"
             ),
             approxDistanceM = 2000,
             waypoints = listOf(

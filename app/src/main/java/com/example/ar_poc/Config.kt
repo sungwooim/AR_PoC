@@ -8,8 +8,9 @@ object Config {
      */
     const val DEV_MODE = false
 
-    // Mock GPS coordinates — 경복궁 정중앙 (DevMode AR/지도 테스트용)
-    // 근정전과 향원정 사이, 모든 POI가 사방에서 보이는 최적 위치
-    const val MOCK_LATITUDE = 37.5796
+    // Mock GPS coordinates — 근정전 위치 (DevMode 테스트용 출발점)
+    // 이전 37.5796은 구글맵 지도 상에서 강녕전 근처로 표시되어 40/60/90분 코스의
+    // 1번 waypoint(근정전)와 정렬이 맞지 않았음. 이를 남쪽으로 조정.
+    const val MOCK_LATITUDE = 37.5784
     const val MOCK_LONGITUDE = 126.9770
 }
