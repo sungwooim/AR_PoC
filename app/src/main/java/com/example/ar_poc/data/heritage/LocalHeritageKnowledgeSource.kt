@@ -301,29 +301,77 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                     chunkId = "gw_01",
                     section = "역사",
                     title = "수난과 복원의 역사",
+                    titleMap = mapOf(
+                        "ko" to "수난과 복원의 역사",
+                        "en" to "A History of Hardship and Restoration",
+                        "ja" to "苦難と復元の歴史",
+                        "zh" to "苦难与复原的历史"
+                    ),
                     keywords = listOf("정문", "수난", "복원", "상징"),
-                    content = "광화문은 경복궁의 정문으로, '빛이 사방을 덮고 교화가 만방에 미친다'는 뜻을 가지고 있습니다. 임진왜란 때 소실된 후 고종 때 중건되었으나, 일제강점기에 조선총독부 건물을 짓기 위해 강제로 위치가 옮겨지고 한국전쟁 때는 문루가 파괴되는 등 수많은 시련을 겪었습니다. 현재의 모습은 2010년, 잘못된 위치와 재질을 바로잡아 원래의 자리에 전통 방식대로 복원한 것입니다."
+                    content = "광화문은 경복궁의 정문으로, '빛이 사방을 덮고 교화가 만방에 미친다'는 뜻을 가지고 있습니다. 임진왜란 때 소실된 후 고종 때 중건되었으나, 일제강점기에 조선총독부 건물을 짓기 위해 강제로 위치가 옮겨지고 한국전쟁 때는 문루가 파괴되는 등 수많은 시련을 겪었습니다. 현재의 모습은 2010년, 잘못된 위치와 재질을 바로잡아 원래의 자리에 전통 방식대로 복원한 것입니다.",
+                    contentMap = mapOf(
+                        "ko" to "광화문은 경복궁의 정문으로, '빛이 사방을 덮고 교화가 만방에 미친다'는 뜻을 가지고 있습니다. 임진왜란 때 소실된 후 고종 때 중건되었으나, 일제강점기에 조선총독부 건물을 짓기 위해 강제로 위치가 옮겨지고 한국전쟁 때는 문루가 파괴되는 등 수많은 시련을 겪었습니다. 현재의 모습은 2010년, 잘못된 위치와 재질을 바로잡아 원래의 자리에 전통 방식대로 복원한 것입니다.",
+                        "en" to "Gwanghwamun is the main gate of Gyeongbokgung Palace, meaning 'light covers all directions and enlightenment reaches all lands.' Destroyed during the Imjin War and rebuilt during King Gojong's reign, it endured many tribulations: forcibly relocated during the Japanese colonial period to make way for the Government-General Building, and its gate tower destroyed during the Korean War. Its current form was restored in 2010 to its original location using traditional methods, correcting the misplaced position and incorrect materials.",
+                        "ja" to "光化門は景福宮の正門で、「光が四方を覆い、教化が万邦に及ぶ」という意味を持っています。文禄・慶長の役で焼失した後、高宗の時代に再建されましたが、日本統治時代には朝鮮総督府の建物を建てるために強制的に位置が移され、朝鮮戦争の際には門楼が破壊されるなど、数多くの試練を経験しました。現在の姿は2010年に、誤った位置と材質を正し、元の場所に伝統的な方式で復元されたものです。",
+                        "zh" to "光化门是景福宫的正门，寓意“光照四方，教化万邦”。壬辰倭乱时被焚毁，高宗时期重建，但在日据时期为建造朝鲜总督府建筑而被强行迁移，朝鲜战争时门楼又遭破坏，历经诸多磨难。目前的面貌是2010年纠正了错误的位置和材质，按照传统方式在原址上复原的结果。"
+                    )
                 ),
                 HeritageChunk(
                     chunkId = "gw_02",
                     section = "건축",
                     title = "웅장한 세 개의 무지개문",
+                    titleMap = mapOf(
+                        "ko" to "웅장한 세 개의 무지개문",
+                        "en" to "Three Majestic Rainbow Arches",
+                        "ja" to "雄大な3つの虹霓門",
+                        "zh" to "雄伟的三座彩虹拱门"
+                    ),
                     keywords = listOf("홍예문", "문루", "석축"),
-                    content = "광화문은 높은 석축 기단 위에 2층 규모의 문루가 세워진 웅장한 구조입니다. 기단부에는 세 개의 홍예문(무지개 모양 문)이 있는데, 가운데 문은 왕이 다니는 문이었으며 좌우 문은 신하들이 출입하던 문이었습니다. 기단부의 거대한 돌들은 조선 시대 석공 기술의 견고함을 잘 보여줍니다."
+                    content = "광화문은 높은 석축 기단 위에 2층 규모의 문루가 세워진 웅장한 구조입니다. 기단부에는 세 개의 홍예문(무지개 모양 문)이 있는데, 가운데 문은 왕이 다니는 문이었으며 좌우 문은 신하들이 출입하던 문이었습니다. 기단부의 거대한 돌들은 조선 시대 석공 기술의 견고함을 잘 보여줍니다.",
+                    contentMap = mapOf(
+                        "ko" to "광화문은 높은 석축 기단 위에 2층 규모의 문루가 세워진 웅장한 구조입니다. 기단부에는 세 개의 홍예문(무지개 모양 문)이 있는데, 가운데 문은 왕이 다니는 문이었으며 좌우 문은 신하들이 출입하던 문이었습니다. 기단부의 거대한 돌들은 조선 시대 석공 기술의 견고함을 잘 보여줍니다.",
+                        "en" to "Gwanghwamun has a grand structure with a two-story gate tower built atop a high stone foundation. The base features three Hongyemun (rainbow-shaped arches) — the central gate was for the king, while the left and right gates were used by officials. The massive stones of the foundation showcase the solidity of Joseon-era stonemasonry.",
+                        "ja" to "光化門は高い石積み基壇の上に2階建ての門楼が建てられた壮大な構造です。基壇部には3つの虹霓門（虹の形の門）があり、中央の門は王が通る門で、左右の門は臣下が出入りする門でした。基壇部の巨大な石は朝鮮時代の石工技術の堅固さをよく表しています。",
+                        "zh" to "光化门是在高石砌基台上建有两层门楼的雄伟建筑。基台部有三座虹霓门（彩虹形门），中间门为国王通行之门，左右门为大臣出入之门。基台部的巨石展现了朝鲜时代石工技艺的坚固性。"
+                    )
                 ),
                 HeritageChunk(
                     chunkId = "gw_03",
                     section = "관람 가이드",
                     title = "수문장 교대 의식",
+                    titleMap = mapOf(
+                        "ko" to "수문장 교대 의식",
+                        "en" to "The Royal Guard Changing Ceremony",
+                        "ja" to "守門将交代儀式",
+                        "zh" to "守门将换岗仪式"
+                    ),
                     keywords = listOf("수문장", "교대식", "전통문화"),
-                    content = "매일 정해진 시간(오전 10시, 오후 2시)에 광화문 앞에서 열리는 수문장 교대 의식은 놓치지 말아야 할 볼거리입니다. 조선 시대 복식과 무기를 그대로 재현한 수문군들의 절도 있는 동작을 통해 당시의 성문 파수 문화를 생생하게 체험할 수 있습니다."
+                    content = "매일 정해진 시간(오전 10시, 오후 2시)에 광화문 앞에서 열리는 수문장 교대 의식은 놓치지 말아야 할 볼거리입니다. 조선 시대 복식과 무기를 그대로 재현한 수문군들의 절도 있는 동작을 통해 당시의 성문 파수 문화를 생생하게 체험할 수 있습니다.",
+                    contentMap = mapOf(
+                        "ko" to "매일 정해진 시간(오전 10시, 오후 2시)에 광화문 앞에서 열리는 수문장 교대 의식은 놓치지 말아야 할 볼거리입니다. 조선 시대 복식과 무기를 그대로 재현한 수문군들의 절도 있는 동작을 통해 당시의 성문 파수 문화를 생생하게 체험할 수 있습니다.",
+                        "en" to "The Royal Guard Changing Ceremony, held daily at set times (10:00 AM and 2:00 PM) in front of Gwanghwamun, is a must-see attraction. Through the disciplined movements of the guards, authentically reproducing Joseon-era costumes and weapons, visitors can vividly experience the palace gate sentry culture of that era.",
+                        "ja" to "毎日決まった時間（午前10時、午後2時）に光化門の前で行われる守門将交代儀式は見逃せない見どころです。朝鮮時代の服装と武器をそのまま再現した守門軍たちの節度ある動作を通して、当時の城門警護文化を生き生きと体験することができます。",
+                        "zh" to "每天在固定时间（上午10时、下午2时）于光化门前举行的守门将换岗仪式是不容错过的看点。守门军们完美再现朝鲜时代的服饰和武器，通过他们整齐划一的动作，可以生动体验当时的城门守卫文化。"
+                    )
                 ),
                 HeritageChunk(
                     chunkId = "gw_04",
                     section = "트리비아",
                     title = "불을 먹는 상상의 동물, 해태",
+                    titleMap = mapOf(
+                        "ko" to "불을 먹는 상상의 동물, 해태",
+                        "en" to "Haetae: The Mythical Fire-Eating Creature",
+                        "ja" to "火を食べる想像の動物、ヘテ",
+                        "zh" to "能吞火的神兽——獬豸"
+                    ),
                     keywords = listOf("해태", "화기", "정의"),
-                    content = "광화문 앞 좌우에는 한 쌍의 해태상이 자리하고 있습니다. 해태는 시비곡직을 가리는 정의로운 동물이기도 하지만, 불을 먹는 능력이 있다고 믿어졌습니다. 이는 풍수지리상 화기가 강한 관악산의 기운으로부터 경복궁을 지키기 위한 조상들의 비보(裨補)책이었습니다."
+                    content = "광화문 앞 좌우에는 한 쌍의 해태상이 자리하고 있습니다. 해태는 시비곡직을 가리는 정의로운 동물이기도 하지만, 불을 먹는 능력이 있다고 믿어졌습니다. 이는 풍수지리상 화기가 강한 관악산의 기운으로부터 경복궁을 지키기 위한 조상들의 비보(裨補)책이었습니다.",
+                    contentMap = mapOf(
+                        "ko" to "광화문 앞 좌우에는 한 쌍의 해태상이 자리하고 있습니다. 해태는 시비곡직을 가리는 정의로운 동물이기도 하지만, 불을 먹는 능력이 있다고 믿어졌습니다. 이는 풍수지리상 화기가 강한 관악산의 기운으로부터 경복궁을 지키기 위한 조상들의 비보(裨補)책이었습니다.",
+                        "en" to "A pair of Haetae statues stand on the left and right in front of Gwanghwamun. Haetae is a righteous creature that distinguishes right from wrong, and was also believed to have the ability to devour fire. This was an ancestral feng shui countermeasure (bibo) to protect Gyeongbokgung from the strong fire energy of Gwanaksan Mountain.",
+                        "ja" to "光化門の前の左右には一対の獬豸（ヘテ）像が配置されています。獬豸は是非曲直を見分ける正義の動物であるとともに、火を食べる能力を持つと信じられていました。これは風水地理上、火気が強い冠岳山の気から景福宮を守るための先祖たちの裨補策でした。",
+                        "zh" to "光化门前左右设有一对獬豸石像。獬豸是明辨是非曲直的正义神兽，同时被认为具有吞火的能力。这是先祖们为了抵挡风水上火气旺盛的冠岳山气运、守护景福宫而采取的裨补（风水调节）之策。"
+                    )
                 )
             ),
             subElements = listOf(

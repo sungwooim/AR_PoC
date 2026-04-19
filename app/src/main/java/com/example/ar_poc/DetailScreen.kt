@@ -1,5 +1,6 @@
 package com.example.ar_poc
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,6 +65,7 @@ fun DetailScreen(
         isLoading = false
     }
 
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -74,6 +77,26 @@ fun DetailScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = backDesc
                         )
+                    }
+                },
+                actions = {
+                    val shareLabel = Strings.getShareLabel(targetLanguage)
+                    TextButton(
+                        onClick = {
+                            if (title.isNotBlank() && shortDescription.isNotBlank()) {
+                                val subject = Strings.getShareSubject(targetLanguage, title)
+                                val body = Strings.getShareBodyTemplate(targetLanguage, title, shortDescription)
+                                val intent = Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_SUBJECT, subject)
+                                    putExtra(Intent.EXTRA_TEXT, body)
+                                }
+                                context.startActivity(Intent.createChooser(intent, shareLabel))
+                            }
+                        },
+                        enabled = !isLoading
+                    ) {
+                        Text(text = "📤 $shareLabel", fontSize = 14.sp)
                     }
                 }
             )

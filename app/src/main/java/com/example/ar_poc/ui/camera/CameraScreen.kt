@@ -30,12 +30,17 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ar_poc.Config
-import com.example.ar_poc.ai.GeminiClient
+import com.example.ar_poc.core.events.DocentEvent
+import com.example.ar_poc.core.events.EventBus
+import com.example.ar_poc.core.gateway.DocentGateway
+import com.example.ar_poc.core.gateway.QuestionRequest
 import com.example.ar_poc.domain.model.*
 import com.example.ar_poc.domain.repository.HeritageRepository
 import com.example.ar_poc.ui.ar.AROverlayScreen
@@ -55,10 +60,10 @@ import com.example.ar_poc.ui.camera.components.UnrealXRLayer
 fun CameraScreen(
     viewModel: ARViewModel,
     onNavigateToDetail: (String, String?) -> Unit,
-    geminiClient: GeminiClient = remember { GeminiClient() },
-    repository: HeritageRepository = remember { HeritageRepository() },
     targetLanguage: String = "ko"
 ) {
+    val gateway = viewModel.gateway
+    val repository = remember { HeritageRepository() }
     val context = LocalContext.current
     val labels = viewModel.labels
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -93,7 +98,8 @@ fun CameraScreen(
     val discoveredHeritages by viewModel.discoveredHeritages.collectAsStateWithLifecycle()
     val discoveredSubElements by viewModel.discoveredSubElements.collectAsStateWithLifecycle()
 
-    // 퀴즈 완료 다이얼로그 상태
+    // 퀴즈 상태
+    var showQuizSheet by remember { mutableStateOf(false) }
     var showQuizResultDialog by remember { mutableStateOf(false) }
     var quizResultScore by remember { mutableIntStateOf(0) }
     var quizResultTotal by remember { mutableIntStateOf(0) }
@@ -214,7 +220,8 @@ fun CameraScreen(
                             FloatingSubElementCard(
                                 subElement = sub,
                                 targetLanguage = targetLanguage,
-                                onDetailClick = { onNavigateToDetail(content.id, sub.linkedChunkId) }
+                                onDetailClick = { onNavigateToDetail(content.id, sub.linkedChunkId) },
+                                onRescan = { viewModel.clearSubElement() }
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
@@ -222,10 +229,14 @@ fun CameraScreen(
                         FloatingHeritageCard(
                             content = content,
                             onDetailClick = { onNavigateToDetail(content.id, null) },
-                            onChatClick = { 
+                            onChatClick = {
                                 prefilledQuestion = ""
-                                showBottomSheet = true 
+                                showBottomSheet = true
                             },
+                            onQuizClick = if (viewModel.hasQuiz(content.id)) { {
+                                viewModel.requestQuiz(content.id)
+                                showQuizSheet = true
+                            } } else null,
                             onClose = { viewModel.resetDetection() },
                             detailLabel = labels.detail,
                             askLabel = labels.ask
@@ -247,15 +258,16 @@ fun CameraScreen(
                 else -> {}
             }
 
-            // 상태 가이드 텝스트 (화면 상단 반투명 바)
+            // 상태 가이드 텍스트 (화면 상단 반투명 바)
+            val currentFailedMsg = failedMessage  // 로컬 스냅샷 — smart cast 안전
             if (uiState is ARUiState.Idle || uiState is ARUiState.GazeLoading) {
                 val guideText = when {
-                    failedMessage != null          -> failedMessage!!
+                    currentFailedMsg != null        -> currentFailedMsg
                     uiState is ARUiState.GazeLoading -> labels.recognizing
-                    isTargetValid                 -> labels.hold
-                    else                          -> labels.point
+                    isTargetValid                   -> labels.hold
+                    else                            -> labels.point
                 }
-                val guideBg = if (failedMessage != null) Color(0xBBCC0000) else Color(0x99000000)
+                val guideBg = if (currentFailedMsg != null) Color(0xBBCC0000) else Color(0x99000000)
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -367,8 +379,8 @@ fun CameraScreen(
             )
         }
 
-        // 퀴즈 팔업 (신규 발견 시 자동 표시)
-        if (pendingQuizQuestions.isNotEmpty()) {
+        // 퀴즈 팝업 (사용자가 퀴즈 버튼 클릭 시 표시)
+        if (showQuizSheet && pendingQuizQuestions.isNotEmpty()) {
             com.example.ar_poc.ui.quiz.QuizBottomSheet(
                 questions = pendingQuizQuestions,
                 targetLanguage = targetLanguage,
@@ -378,12 +390,14 @@ fun CameraScreen(
                     quizCompletedHeritageId = pendingQuizQuestions.firstOrNull()?.heritageId ?: ""
                     viewModel.clearPendingQuiz()
                     if (quizCompletedHeritageId.isNotEmpty()) viewModel.markQuizCompleted(quizCompletedHeritageId)
+                    showQuizSheet = false
                     showQuizResultDialog = true
                 },
                 onDismiss = {
                     quizCompletedHeritageId = pendingQuizQuestions.firstOrNull()?.heritageId ?: ""
                     viewModel.clearPendingQuiz()
                     if (quizCompletedHeritageId.isNotEmpty()) viewModel.markQuizCompleted(quizCompletedHeritageId)
+                    showQuizSheet = false
                 }
             )
         }
@@ -399,7 +413,8 @@ fun CameraScreen(
         }
 
         if (showBottomSheet) {
-            val detectedId = (uiState as? ARUiState.Detected)?.content?.id ?: ""
+            val detectedId = (uiState as? ARUiState.Detected)?.content?.id.orEmpty()
+            if (detectedId.isEmpty()) { showBottomSheet = false; return@Box }
             QuestionBottomSheet(
                 landmarkId = detectedId,
                 repository = repository,
@@ -408,7 +423,9 @@ fun CameraScreen(
                 titleLabel = labels.questionTitle,
                 placeholderLabel = labels.questionPlaceholder,
                 waitingLabel = labels.waitingAnswer,
-                geminiClient = geminiClient,
+                gateway = gateway,
+                eventBus = viewModel.eventBus,
+                viewModel = viewModel,
                 targetLanguage = targetLanguage,
                 onClose = { showBottomSheet = false }
             )
@@ -420,18 +437,19 @@ fun CameraScreen(
 fun FloatingSubElementCard(
     subElement: com.example.ar_poc.domain.model.SubElement,
     targetLanguage: String,
-    onDetailClick: () -> Unit
+    onDetailClick: () -> Unit,
+    onRescan: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
-            .width(260.dp)
-            .clickable { onDetailClick() },
+        modifier = Modifier.width(280.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier
+                .clickable { onDetailClick() }
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -443,7 +461,7 @@ fun FloatingSubElementCard(
                 Text("✨", fontSize = 16.sp)
             }
             Spacer(modifier = Modifier.width(10.dp))
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = com.example.ar_poc.Strings.getSubElementLabel(targetLanguage),
                     fontSize = 11.sp,
@@ -457,6 +475,14 @@ fun FloatingSubElementCard(
                     fontWeight = FontWeight.Bold
                 )
             }
+            // 다른 세부유물 스캔 버튼
+            Text(
+                text = "🔄",
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .clickable { onRescan() }
+                    .padding(4.dp)
+            )
         }
     }
 }
@@ -558,6 +584,7 @@ fun FloatingHeritageCard(
     content: com.example.ar_poc.domain.model.HeritageContent,
     onDetailClick: () -> Unit,
     onChatClick: () -> Unit,
+    onQuizClick: (() -> Unit)? = null,
     onClose: () -> Unit,
     detailLabel: String,
     askLabel: String,
@@ -670,6 +697,19 @@ fun FloatingHeritageCard(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
+
+                // 퀴즈 버튼 — 풀 수 있는 퀴즈가 있을 때만 표시
+                if (onQuizClick != null) {
+                    OutlinedButton(
+                        onClick = onQuizClick,
+                        modifier = Modifier.height(52.dp),
+                        border = BorderStroke(1.5.dp, Color(0xFFFFB300)),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp)
+                    ) {
+                        Text("🧩", fontSize = 18.sp)
+                    }
+                }
             }
         }
     }
@@ -705,7 +745,8 @@ fun SuggestedQuestionChips(
     }
 }
 
-data class ChatMessage(val text: String, val isUser: Boolean, val isError: Boolean = false)
+// ChatMessage는 ARViewModel 안에 정의됨 — import 경유로 접근
+typealias ChatMessage = com.example.ar_poc.ui.viewmodel.ARViewModel.ChatMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -717,59 +758,89 @@ fun QuestionBottomSheet(
     titleLabel: String,
     placeholderLabel: String,
     waitingLabel: String,
-    geminiClient: GeminiClient = remember { GeminiClient() },
+    gateway: DocentGateway,
+    eventBus: EventBus,
+    viewModel: com.example.ar_poc.ui.viewmodel.ARViewModel,
     targetLanguage: String = "ko",
     onClose: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
     var questionText by remember { mutableStateOf("") }
-    
-    // Performance Optimization: Use mutableStateListOf instead of recreating List on every keystroke
-    val messages = remember { mutableStateListOf<ChatMessage>() }
+
+    // 음성 인식 상태 (내장 SpeechRecognizer)
+    val ctx = LocalContext.current
+    val sttHelper = remember { com.example.ar_poc.util.SpeechRecognizerHelper(ctx) }
+    var isListening by remember { mutableStateOf(false) }
+    var micError by remember { mutableStateOf<String?>(null) }
+    val micPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (!granted) {
+            micError = com.example.ar_poc.Strings.getMicPermissionLabel(targetLanguage)
+        }
+    }
+    DisposableEffect(Unit) {
+        onDispose { sttHelper.release() }
+    }
+
+    // ViewModel에서 채팅 내역 구독 — BottomSheet 닫아도 유지됨
+    val messages by viewModel.chatMessages.collectAsStateWithLifecycle()
     var isLoading by remember { mutableStateOf(false) }
-    
+
     val listState = androidx.compose.foundation.lazy.rememberLazyListState()
 
-    // Helper: build RAG context then ask Gemini
+    // Helper: build RAG context then ask
     suspend fun ask(question: String) {
         if (question.isBlank()) return
-        
-        // Add user message via built-in mutable state list addition
-        messages.add(ChatMessage(question, isUser = true))
+
+        eventBus.publish(
+            DocentEvent.QuestionAsked(
+                heritageId = landmarkId,
+                question = question,
+                language = targetLanguage
+            )
+        )
+
+        viewModel.addChatMessage(ChatMessage(question, isUser = true))
         questionText = ""
         isLoading = true
-        
+
         try {
             val ragContext = repository.buildRagContext(landmarkId, question)
-            val answerIndex = messages.size
-            messages.add(ChatMessage("", isUser = false))
+            viewModel.addChatMessage(ChatMessage("", isUser = false))
             var currentAnswer = ""
 
-            // Typewriter effect powered by Gemini streaming chunks
-            geminiClient.askQuestion(question, ragContext, targetLanguage).collect { chunk ->
+            gateway.askQuestion(
+                QuestionRequest(
+                    question = question,
+                    heritageContext = ragContext,
+                    targetLanguage = targetLanguage,
+                    heritageId = landmarkId,
+                )
+            ).collect { chunk ->
                 for (char in chunk) {
                     currentAnswer += char
-                    messages[answerIndex] = ChatMessage(currentAnswer, isUser = false)
-                    kotlinx.coroutines.delay(15L) // 15ms per character
+                    viewModel.updateLastChatMessage(ChatMessage(currentAnswer, isUser = false))
+                    kotlinx.coroutines.delay(15L)
                 }
             }
         } catch (e: Exception) {
             val errorPrefix = com.example.ar_poc.Strings.getErrorPrefix(targetLanguage)
-            messages.add(ChatMessage("$errorPrefix${e.message}", isUser = false, isError = true))
+            viewModel.addChatMessage(ChatMessage("$errorPrefix${e.message}", isUser = false, isError = true))
         } finally {
             isLoading = false
         }
     }
 
-    // Auto-submit if a prefilled question was provided
+    // Auto-submit if a prefilled question was provided (only if chat is empty)
     LaunchedEffect(initialQuestion) {
         if (initialQuestion.isNotBlank() && messages.isEmpty()) {
             ask(initialQuestion)
         }
     }
-    
-    // Auto-scroll to bottom when messages change or while streaming
+
+    // Auto-scroll to bottom
     val lastTextLength = messages.lastOrNull()?.text?.length ?: 0
     LaunchedEffect(messages.size, isLoading, lastTextLength) {
         if (messages.isNotEmpty()) {
@@ -861,11 +932,59 @@ fun QuestionBottomSheet(
                     .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), RoundedCornerShape(26.dp))
                     .padding(horizontal = 6.dp, vertical = 4.dp)
             ) {
+                // 음성 입력 버튼 (Android 내장 SpeechRecognizer)
+                val voiceLabel = com.example.ar_poc.Strings.getVoiceInputLabel(targetLanguage)
+                val listeningLabel = com.example.ar_poc.Strings.getVoiceListeningLabel(targetLanguage)
+                IconButton(
+                    onClick = {
+                        if (isListening) {
+                            sttHelper.stop()
+                            isListening = false
+                            return@IconButton
+                        }
+                        if (!sttHelper.hasPermission()) {
+                            micPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                            return@IconButton
+                        }
+                        micError = null
+                        isListening = true
+                        sttHelper.start(
+                            languageTag = com.example.ar_poc.util.SpeechRecognizerHelper.languageTag(targetLanguage),
+                            onResult = { text ->
+                                questionText = text
+                                isListening = false
+                            },
+                            onError = { msg ->
+                                micError = msg
+                                isListening = false
+                            },
+                            onPartialResult = { partial ->
+                                questionText = partial
+                            }
+                        )
+                    },
+                    enabled = !isLoading,
+                    modifier = Modifier.size(44.dp).semantics {
+                        contentDescription = if (isListening) listeningLabel else voiceLabel
+                    }
+                ) {
+                    Text(
+                        text = if (isListening) "🎙️" else "🎤",
+                        fontSize = 18.sp
+                    )
+                }
+
                 OutlinedTextField(
                     value = questionText,
                     onValueChange = { questionText = it },
                     modifier = Modifier.weight(1f),
-                    placeholder = { Text(placeholderLabel, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)) },
+                    placeholder = {
+                        Text(
+                            if (isListening) listeningLabel else placeholderLabel,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
+                    },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
@@ -971,6 +1090,7 @@ private fun NavBarItem(
     val textColor = if (active) Color(0xFF64B5F6) else Color.White.copy(alpha = 0.85f)
     Column(
         modifier = Modifier
+            .semantics { contentDescription = label }
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally

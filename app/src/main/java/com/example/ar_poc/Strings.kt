@@ -341,5 +341,77 @@ object Strings {
         "zh" -> "💡 提示: 仔细观察 '${chunkTitle}' 附近"
         else -> "💡 힌트: '${chunkTitle}' 관련 설명을 읽고 주변을 찾아보세요!"
     }
+
+    // ──────────────────────────────────────────────
+    // 8. Share (소셜 공유 문구)
+    // ──────────────────────────────────────────────
+    fun getShareLabel(lang: String): String = when (lang) {
+        "en" -> "Share"
+        "ja" -> "共有"
+        "zh" -> "分享"
+        else -> "공유"
+    }
+
+    fun getShareSubject(lang: String, title: String): String = when (lang) {
+        "en" -> "About $title — Gyeongbokgung AR Docent"
+        "ja" -> "$title について — 景福宮ARドーセント"
+        "zh" -> "关于$title — 景福宫AR导览"
+        else -> "$title 소개 — 경복궁 AR 도슨트"
+    }
+
+    fun getShareBodyTemplate(lang: String, title: String, description: String): String = when (lang) {
+        "en" -> "I'm exploring $title at Gyeongbokgung Palace!\n\n$description\n\n— via Gyeongbokgung AR Docent"
+        "ja" -> "景福宮の$title を訪れています！\n\n$description\n\n— 景福宮ARドーセントより"
+        "zh" -> "我正在景福宫参观$title！\n\n$description\n\n— 来自景福宫AR导览"
+        else -> "경복궁 $title 을(를) 탐험 중이에요!\n\n$description\n\n— 경복궁 AR 도슨트"
+    }
+
+    // ──────────────────────────────────────────────
+    // 9. Speech-to-Text (음성 인식)
+    // ──────────────────────────────────────────────
+    fun getVoiceInputLabel(lang: String): String = when (lang) {
+        "en" -> "Voice input"
+        "ja" -> "音声入力"
+        "zh" -> "语音输入"
+        else -> "음성 입력"
+    }
+
+    fun getVoiceListeningLabel(lang: String): String = when (lang) {
+        "en" -> "Listening..."
+        "ja" -> "聞き取り中..."
+        "zh" -> "正在聆听..."
+        else -> "듣는 중..."
+    }
+
+    fun getMicPermissionLabel(lang: String): String = when (lang) {
+        "en" -> "Microphone permission required"
+        "ja" -> "マイクの許可が必要です"
+        "zh" -> "需要麦克风权限"
+        else -> "마이크 권한이 필요합니다"
+    }
+
+    // ──────────────────────────────────────────────
+    // 10. Accessibility labels (접근성 공통 라벨)
+    // ──────────────────────────────────────────────
+    fun getCloseLabel(lang: String): String = when (lang) {
+        "en" -> "Close"
+        "ja" -> "閉じる"
+        "zh" -> "关闭"
+        else -> "닫기"
+    }
+
+    fun getDiscoveredAccessibility(lang: String, title: String): String = when (lang) {
+        "en" -> "$title, discovered"
+        "ja" -> "$title、発見済み"
+        "zh" -> "$title，已发现"
+        else -> "$title, 발견 완료"
+    }
+
+    fun getLockedAccessibility(lang: String, title: String): String = when (lang) {
+        "en" -> "$title, not yet discovered"
+        "ja" -> "$title、未発見"
+        "zh" -> "$title，未发现"
+        else -> "$title, 미발견"
+    }
 }
 

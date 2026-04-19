@@ -1,7 +1,7 @@
 # AR_POC Project Map
 > **목적**: 코드 수정 시 이 파일만 참조해서 불필요한 파일 full-read를 줄임
 > **업데이트**: 파일 구조/시그니처 변경 시 반드시 이 파일도 갱신
-> **최종 업데이트**: 2026-04-18 (경복궁 전체 확장: 14개 전각 → 17개, 퀴즈 40+문항, 전각별 추천질문, extraPOI 10개)
+> **최종 업데이트**: 2026-04-19 (광화문 청크 다국어 보완, TSP 코스 추천, 공유/STT/접근성, 유닛 테스트 38개)
 
 ---
 
@@ -156,7 +156,9 @@ com.example.ar_poc
 │                                    #   BuildConfig.ORCHESTRATOR_URL 유무로 DI 자동 토글
 │
 ├── util/
-│   └── LocaleHelper.kt             # Context를 특정 Locale로 래핑하는 유틸리티
+│   ├── LocaleHelper.kt             # Context를 특정 Locale로 래핑하는 유틸리티
+│   ├── AppLogger.kt                # DEV_MODE 기반 logcat 래퍼
+│   └── SpeechRecognizerHelper.kt   # Android 내장 STT 래퍼 (ko/en/ja/zh, RECORD_AUDIO 권한)
 │
 └── ui/
     ├── LanguageSelectionScreen.kt   # 언어 선택 (ko/en/ja/zh), 그라데이션 한지 배경

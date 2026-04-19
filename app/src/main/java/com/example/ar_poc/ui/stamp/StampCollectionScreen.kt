@@ -89,7 +89,11 @@ fun StampCollectionScreen(
                     )
                 }
                 IconButton(onClick = onClose) {
-                    Icon(Icons.Default.Close, contentDescription = "닫기", tint = Color.White)
+                    Icon(
+                        Icons.Default.Close,
+                        contentDescription = Strings.getCloseLabel(targetLanguage),
+                        tint = Color.White
+                    )
                 }
             }
 

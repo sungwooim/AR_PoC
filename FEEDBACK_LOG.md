@@ -172,6 +172,29 @@
 - **수정**: orchestrator/knowledge.py에 메타데이터 수동 추가 완료. retrieval/knowledge.py 청크는 2차 작업
 - **규칙 승격**: ✅ AGENTS.md 체크리스트에 "Android 전각 추가 시 서버 knowledge.py 동기화" 항목 추가 권고
 
+## 2026-04-19 세션 기록
+
+### [2026-04-19] material-icons-core에 Mic/MicOff/Share 아이콘 없음
+- **발견 위치**: CameraScreen.kt, DetailScreen.kt
+- **패턴**: `Icons.Filled.Mic`, `Icons.Filled.Share` 사용 시 Unresolved reference
+- **원인**: 기본 material-icons-core 라이브러리는 기본 아이콘만 포함. 확장 아이콘은 `androidx.compose.material:material-icons-extended` 의존성 필요
+- **수정**: 추가 의존성 도입 대신 emoji(🎤/🎙️/📤)로 대체 — 가볍고 다국어 환경에서도 잘 보임
+- **규칙 승격**: ✅ AGENTS.md 체크리스트: "Icons.Filled/Outlined 사용 시 core 포함 여부 확인, 없으면 emoji 대체"
+
+### [2026-04-19] 중국어 스마트쿼트 재오염 (광화문 contentMap)
+- **발견 위치**: LocalHeritageKnowledgeSource.kt 광화문 gw_01 zh 콘텐츠
+- **패턴**: 4개국어 보완 시 또 다시 중국어 텍스트에 ASCII `"` 삽입
+- **원인**: Edit tool 입력에서 중국어 인용 자동 완성이 ASCII 큰따옴표로 변환됨
+- **수정**: Python 스크립트로 opening/closing 유니코드 스마트쿼트(\u201C/\u201D)로 자동 교체
+- **규칙 승격**: ✅ pre-commit hook에 "중국어 텍스트 라인에 ASCII 큰따옴표 4개 이상" 검사 추가 권고
+
+### [2026-04-19] 유닛 테스트 부재 → 하드코딩 콘텐츠 확장 시 무결성 보장 안 됨
+- **발견 위치**: 기존에는 ExampleUnitTest.kt 하나만 존재
+- **패턴**: 17개 전각 × 4개국어 × 다양한 필드 조합에서 누락이 발생해도 빌드는 통과
+- **원인**: 데이터 무결성(alias, titleMap, chunk linkedChunkId 등)을 보증하는 자동 검증 없음
+- **수정**: SpatialCalculator / LocalHeritageKnowledgeSource / RuleRetriever / QuizRepository 테스트 총 37개 추가
+- **규칙 승격**: ✅ AGENTS.md 체크리스트: "데이터 추가 시 대응 테스트 업데이트" 추가
+
 ---
 
 ## 패턴 통계
@@ -192,3 +215,6 @@
 | 하드코딩 파일 크기 급증 | 1 | 미반영 (DB 마이그레이션 예정) |
 | 다국어 맵 일관성 누락 | 1 | 미반영 (기존 코드, 별도 보완) |
 | 서버 데이터 동기화 누락 | 1 | ✅ AGENTS.md 체크리스트 추가 권고 |
+| Icons 확장 라이브러리 미포함 | 1 | ✅ emoji 대체 패턴 확립 |
+| 중국어 스마트쿼트 재오염 | 2 | ✅ pre-commit hook 추가 권고 |
+| 유닛 테스트 부재 | 1 | ✅ 데이터 무결성 테스트 37개 추가 |
