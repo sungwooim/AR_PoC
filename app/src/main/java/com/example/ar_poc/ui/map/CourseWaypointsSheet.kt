@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
@@ -160,9 +160,10 @@ fun CourseWaypointsSheet(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
                 contentPadding = PaddingValues(bottom = 8.dp)
             ) {
-                items(stops) { wp ->
+                itemsIndexed(stops) { index, wp ->
                     WaypointRow(
                         waypoint = wp,
+                        stopIndex = index + 1,
                         visited = wp.order in visitedOrders,
                         isNext = wp.order == nextWaypointOrder,
                         currentLocation = currentLocation,
@@ -181,6 +182,7 @@ fun CourseWaypointsSheet(
 @Composable
 private fun WaypointRow(
     waypoint: CourseWaypoint,
+    stopIndex: Int,
     visited: Boolean,
     isNext: Boolean,
     currentLocation: Location?,
@@ -208,7 +210,7 @@ private fun WaypointRow(
             if (visited) {
                 Text("✓", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             } else {
-                Text("${waypoint.order}", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                Text("$stopIndex", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
             }
         }
         Spacer(modifier = Modifier.width(12.dp))

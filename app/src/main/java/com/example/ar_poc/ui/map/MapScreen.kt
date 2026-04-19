@@ -306,8 +306,10 @@ fun MapScreen(
                         )
                     }
                 }
-                // 번호 마커: stop waypoint만 표시 (경유점 제외)
-                course.stops.forEach { wp ->
+                // 번호 마커: stop waypoint만 표시 (경유점 제외).
+                // 표시 번호는 wp.order(전체 waypoint 순서)가 아닌 stop 순서 (1, 2, 3...) 사용.
+                course.stops.forEachIndexed { index, wp ->
+                    val stopIndex = index + 1
                     val visited = wp.order in visitedOrders
                     val isNext = wp.order == nextWaypointOrder
                     MarkerComposable(
@@ -319,7 +321,6 @@ fun MapScreen(
                             when {
                                 hid != null -> onNavigateToDetail(hid, null)
                                 pid != null -> {
-                                    // POI 상세: poiList에서 찾아서 PoiInfoDialog 표시
                                     val poi = poiList.find { it.id == pid }
                                     if (poi != null) selectedInfoPoi = poi
                                 }
@@ -329,7 +330,7 @@ fun MapScreen(
                         zIndex = 8f
                     ) {
                         CourseWaypointMarker(
-                            order = wp.order,
+                            order = stopIndex,
                             name = wp.localizedName(targetLanguage),
                             visited = visited,
                             isNext = isNext

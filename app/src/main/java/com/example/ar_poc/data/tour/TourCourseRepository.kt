@@ -18,13 +18,14 @@ import javax.inject.Singleton
 class TourCourseRepository @Inject constructor() {
 
     // ─────────────────────────────────────────────────────────
-    // 경회루 마커 위치 override.
-    // 실제 pavilion은 연못(126.9749) 중앙이지만, 코스에서는 연못 동쪽 다리 입구
-    // (조용한 누각 시야 지점)에 마커를 배치해 경로가 물을 가로지르지 않도록 함.
-    // Heritage recognition은 original 좌표(pavilion 중앙)를 그대로 사용.
+    // 경회루는 연못 위 파빌리온 위치에 마커 표시 (사용자 요청).
     // ─────────────────────────────────────────────────────────
-    private val gyeonghoeruViewLat = 37.5800
-    private val gyeonghoeruViewLng = 126.9755
+    private val gyeonghoeruLat = 37.5800
+    private val gyeonghoeruLng = 126.9749
+
+    // 수정전: 연못 남쪽, 근정전 서쪽
+    private val sujeongjeonLat = 37.5793
+    private val sujeongjeonLng = 126.9756
 
     private val courses: List<TourCourse> = listOf(
         // ═══════════════════════════════════════════════════════════════
@@ -46,18 +47,19 @@ class TourCourseRepository @Inject constructor() {
                 "ja" to "勤政殿・修政殿・慶会楼・思政殿の4か所を短時間で巡るコース。",
                 "zh" to "快速游览勤政殿、修政殿、庆会楼、思政殿四处精华。"
             ),
-            approxDistanceM = 400,
+            approxDistanceM = 500,
             waypoints = listOf(
                 stopHeritage(1, "geunjeongjeon", 37.5796, 126.9770, "근정전", "Geunjeongjeon", "勤政殿", "勤政殿"),
-                // 근정전 → 수정전 (서쪽)
-                path(2, 37.5799, 126.9765),
-                stopHeritage(3, "sujeongjeon", 37.5801, 126.9760, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
-                // 수정전 → 경회루 동쪽 뷰포인트 (조용한 연못 옆)
-                path(4, 37.5800, 126.9758),
-                stopHeritage(5, "gyeonghoeru", gyeonghoeruViewLat, gyeonghoeruViewLng, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
-                // 경회루 → 사정전 (동쪽 복귀)
-                path(6, 37.5802, 126.9765),
-                stopHeritage(7, "sajeongjeon", 37.5802, 126.9770, "사정전", "Sajeongjeon", "思政殿", "思政殿")
+                // 근정전 → 수정전 (남서쪽 연못 남쪽)
+                path(2, 37.5794, 126.9763),
+                stopHeritage(3, "sujeongjeon", sujeongjeonLat, sujeongjeonLng, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
+                // 수정전 → 경회루 pavilion (남쪽 다리 건너 파빌리온)
+                path(4, 37.5797, 126.9753),
+                stopHeritage(5, "gyeonghoeru", gyeonghoeruLat, gyeonghoeruLng, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
+                // 경회루 → 사정전 (동쪽으로 다리 나와서 북동쪽)
+                path(6, 37.5800, 126.9754),
+                path(7, 37.5802, 126.9765),
+                stopHeritage(8, "sajeongjeon", 37.5802, 126.9770, "사정전", "Sajeongjeon", "思政殿", "思政殿")
             )
         ),
 
@@ -81,29 +83,30 @@ class TourCourseRepository @Inject constructor() {
                 "ja" to "40分コースに康寧殿・交泰殿・興福殿・東宮・焼厨房・慈慶殿を加えた標準10か所コース。",
                 "zh" to "在40分钟路线上增加康宁殿、交泰殿、兴福殿、东宫、烧厨房、慈庆殿的10处标准路线。"
             ),
-            approxDistanceM = 1000,
+            approxDistanceM = 1100,
             waypoints = listOf(
                 stopHeritage(1, "geunjeongjeon", 37.5796, 126.9770, "근정전", "Geunjeongjeon", "勤政殿", "勤政殿"),
-                path(2, 37.5799, 126.9765),
-                stopHeritage(3, "sujeongjeon", 37.5801, 126.9760, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
-                path(4, 37.5800, 126.9758),
-                stopHeritage(5, "gyeonghoeru", gyeonghoeruViewLat, gyeonghoeruViewLng, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
-                path(6, 37.5802, 126.9765),
-                stopHeritage(7, "sajeongjeon", 37.5802, 126.9770, "사정전", "Sajeongjeon", "思政殿", "思政殿"),
-                stopHeritage(8, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
-                stopHeritage(9, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
+                path(2, 37.5794, 126.9763),
+                stopHeritage(3, "sujeongjeon", sujeongjeonLat, sujeongjeonLng, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
+                path(4, 37.5797, 126.9753),
+                stopHeritage(5, "gyeonghoeru", gyeonghoeruLat, gyeonghoeruLng, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
+                path(6, 37.5800, 126.9754),
+                path(7, 37.5802, 126.9765),
+                stopHeritage(8, "sajeongjeon", 37.5802, 126.9770, "사정전", "Sajeongjeon", "思政殿", "思政殿"),
+                stopHeritage(9, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
+                stopHeritage(10, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
                 // 교태전 → 흥복전 (서쪽)
-                path(10, 37.5815, 126.9766),
-                stopHeritage(11, "heungbokjeon", 37.5815, 126.9762, "흥복전", "Heungbokjeon", "興福殿", "兴福殿"),
+                path(11, 37.5815, 126.9766),
+                stopHeritage(12, "heungbokjeon", 37.5815, 126.9762, "흥복전", "Heungbokjeon", "興福殿", "兴福殿"),
                 // 흥복전 → 동궁 (남동쪽)
-                path(12, 37.5810, 126.9770),
-                path(13, 37.5806, 126.9780),
-                stopHeritage(14, "donggung", 37.5803, 126.9782, "동궁", "Donggung", "東宮", "东宫"),
+                path(13, 37.5810, 126.9770),
+                path(14, 37.5806, 126.9780),
+                stopHeritage(15, "donggung", 37.5803, 126.9782, "동궁", "Donggung", "東宮", "东宫"),
                 // 동궁 → 소주방 (북서쪽으로 복귀)
-                path(15, 37.5808, 126.9778),
-                stopHeritage(16, "sojubang", 37.5810, 126.9775, "소주방", "Sojubang", "焼厨房", "烧厨房"),
+                path(16, 37.5808, 126.9778),
+                stopHeritage(17, "sojubang", 37.5810, 126.9775, "소주방", "Sojubang", "焼厨房", "烧厨房"),
                 // 소주방 → 자경전 (북동쪽)
-                stopHeritage(17, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿")
+                stopHeritage(18, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿")
             )
         ),
 
@@ -128,42 +131,42 @@ class TourCourseRepository @Inject constructor() {
                 "ja" to "景福宮14か所を全て巡る完走コース。咸和堂・緝敬堂、香遠亭・乾清宮、集玉斎、泰元殿の後苑エリアまで含む。",
                 "zh" to "游览景福宫全部14处的完整路线。包括咸和堂·缉敬堂、香远亭·乾清宫、集玉斋、泰元殿等后苑区域。"
             ),
-            approxDistanceM = 1800,
+            approxDistanceM = 2000,
             waypoints = listOf(
                 // 1~10 60분 코스와 동일 순서
                 stopHeritage(1, "geunjeongjeon", 37.5796, 126.9770, "근정전", "Geunjeongjeon", "勤政殿", "勤政殿"),
-                path(2, 37.5799, 126.9765),
-                stopHeritage(3, "sujeongjeon", 37.5801, 126.9760, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
-                path(4, 37.5800, 126.9758),
-                stopHeritage(5, "gyeonghoeru", gyeonghoeruViewLat, gyeonghoeruViewLng, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
-                path(6, 37.5802, 126.9765),
-                stopHeritage(7, "sajeongjeon", 37.5802, 126.9770, "사정전", "Sajeongjeon", "思政殿", "思政殿"),
-                stopHeritage(8, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
-                stopHeritage(9, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
-                path(10, 37.5815, 126.9766),
-                stopHeritage(11, "heungbokjeon", 37.5815, 126.9762, "흥복전", "Heungbokjeon", "興福殿", "兴福殿"),
-                path(12, 37.5810, 126.9770),
-                path(13, 37.5806, 126.9780),
-                stopHeritage(14, "donggung", 37.5803, 126.9782, "동궁", "Donggung", "東宮", "东宫"),
-                path(15, 37.5808, 126.9778),
-                stopHeritage(16, "sojubang", 37.5810, 126.9775, "소주방", "Sojubang", "焼厨房", "烧厨房"),
-                stopHeritage(17, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿"),
+                path(2, 37.5794, 126.9763),
+                stopHeritage(3, "sujeongjeon", sujeongjeonLat, sujeongjeonLng, "수정전", "Sujeongjeon", "修政殿", "修政殿"),
+                path(4, 37.5797, 126.9753),
+                stopHeritage(5, "gyeonghoeru", gyeonghoeruLat, gyeonghoeruLng, "경회루", "Gyeonghoeru", "慶會樓", "庆会楼"),
+                path(6, 37.5800, 126.9754),
+                path(7, 37.5802, 126.9765),
+                stopHeritage(8, "sajeongjeon", 37.5802, 126.9770, "사정전", "Sajeongjeon", "思政殿", "思政殿"),
+                stopHeritage(9, "gangnyeongjeon", 37.5808, 126.9770, "강녕전", "Gangnyeongjeon", "康寧殿", "康宁殿"),
+                stopHeritage(10, "gyotaejeon", 37.5813, 126.9770, "교태전", "Gyotaejeon", "交泰殿", "交泰殿"),
+                path(11, 37.5815, 126.9766),
+                stopHeritage(12, "heungbokjeon", 37.5815, 126.9762, "흥복전", "Heungbokjeon", "興福殿", "兴福殿"),
+                path(13, 37.5810, 126.9770),
+                path(14, 37.5806, 126.9780),
+                stopHeritage(15, "donggung", 37.5803, 126.9782, "동궁", "Donggung", "東宮", "东宫"),
+                path(16, 37.5808, 126.9778),
+                stopHeritage(17, "sojubang", 37.5810, 126.9775, "소주방", "Sojubang", "焼厨房", "烧厨房"),
+                stopHeritage(18, "jagyeongjeon", 37.5812, 126.9779, "자경전", "Jagyeongjeon", "慈慶殿", "慈庆殿"),
                 // 11. 함화당·집경당 (자경전 북서쪽)
-                path(18, 37.5816, 126.9773),
-                stopPoi(19, "hamhwadang_jipgyeongdang", 37.5818, 126.9768,
+                path(19, 37.5816, 126.9773),
+                stopPoi(20, "hamhwadang_jipgyeongdang", 37.5818, 126.9768,
                     "함화당·집경당", "Hamhwadang & Jipgyeongdang", "咸和堂・緝敬堂", "咸和堂·缉敬堂"),
                 // 12. 향원정·건청궁 — 향원지 동쪽·북쪽으로 우회 (물 회피)
-                path(20, 37.5823, 126.9776),
-                path(21, 37.5826, 126.9770),
-                stopHeritage(22, "hyangwonjeong", 37.5822, 126.9768, "향원정·건청궁", "Hyangwonjeong & Geoncheongung", "香遠亭・乾清宮", "香远亭·乾清宫"),
-                // (13번은 건청궁으로 카운트하지만 waypoint 번호는 내부 순차)
-                path(23, 37.5826, 126.9770),
+                path(21, 37.5823, 126.9776),
+                path(22, 37.5826, 126.9770),
+                stopHeritage(23, "hyangwonjeong", 37.5822, 126.9768, "향원정·건청궁", "Hyangwonjeong & Geoncheongung", "香遠亭・乾清宮", "香远亭·乾清宫"),
+                path(24, 37.5826, 126.9770),
                 // 13. 집옥재
-                stopHeritage(24, "jibokjae", 37.5829, 126.9775, "집옥재", "Jibokjae", "集玉齋", "集玉斋"),
+                stopHeritage(25, "jibokjae", 37.5829, 126.9775, "집옥재", "Jibokjae", "集玉齋", "集玉斋"),
                 // 14. 태원전 (향원지 서쪽으로 우회)
-                path(25, 37.5827, 126.9762),
-                path(26, 37.5822, 126.9758),
-                stopHeritage(27, "taeweonjeon", 37.5815, 126.9755, "태원전", "Taeweonjeon", "泰元殿", "泰元殿")
+                path(26, 37.5827, 126.9762),
+                path(27, 37.5822, 126.9758),
+                stopHeritage(28, "taeweonjeon", 37.5815, 126.9755, "태원전", "Taeweonjeon", "泰元殿", "泰元殿")
             )
         )
     )

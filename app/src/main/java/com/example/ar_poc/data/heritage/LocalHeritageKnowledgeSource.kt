@@ -708,8 +708,9 @@ class LocalHeritageKnowledgeSource : HeritageKnowledgeSource {
                 "ja" to "世宗大王の集賢殿があった場所で、ハングル創製の発祥地であり、朝鮮最高の学問機関が置かれた殿閣です。",
                 "zh" to "世宗大王集贤殿所在之处，是韩文创制的发源地，也是朝鲜最高学术机构所在的殿阁。"
             ),
-            latitude = 37.5801,
-            longitude = 126.9760,
+            // 수정전은 경회루 연못 남쪽·근정전 서쪽에 위치. 사용자 스크린샷 기준 좌표 보정.
+            latitude = 37.5793,
+            longitude = 126.9756,
             chunks = listOf(
                 HeritageChunk(
                     chunkId = "sujeongjeon_pdf_official",
