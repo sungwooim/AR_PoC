@@ -48,9 +48,12 @@ fun MapScreen(
     selectedCourse: TourCourse? = null,
     visitedOrders: Set<Int> = emptySet(),
     nextWaypointOrder: Int? = null,
+    isNavigating: Boolean = false,
     onSelectCourse: (String) -> Unit = {},
     onClearCourse: () -> Unit = {},
     onToggleWaypointVisited: (Int) -> Unit = {},
+    onStartNavigation: () -> Unit = {},
+    onStopNavigation: () -> Unit = {},
     onPoiClick: (String) -> Unit = {},
     onNavigateToDetail: (heritageId: String, chunkId: String?) -> Unit = { _, _ -> },
     onClose: () -> Unit,
@@ -98,7 +101,7 @@ fun MapScreen(
     // cameraPositionState.isMoving 은 업데이트와 충돌 시 간헐적으로 무시되므로 손가락이 닿는 즉시 전환합니다.
 
     // [통합 카메라 로직] 위치 갱신 + 방위각 회전 제어
-    LaunchedEffect(isFollowing, currentLocation, animatedBearing) {
+    LaunchedEffect(isFollowing, currentLocation, animatedBearing, isNavigating) {
         val currentPos = cameraPositionState.position
         
         // 아프리카 버그 방지: 초기화 전 target이 (0,0) 일 때는 포지션 덮어쓰기 보류
@@ -113,12 +116,15 @@ fun MapScreen(
 
         val currentLoc = currentLocation
         if (currentLoc != null && Math.abs(currentLoc.latitude) > 0.001) {
-            // 자동 추적 모드: 내 위치 중심점 + 앱 방위각
+            // 내비 모드: 줌 업(18.5f) + 60도 틸트(구글맵 내비 스타일)
+            // 일반 모드: 기존 탑다운 뷰
+            val targetZoom = if (isNavigating) 18.5f else currentPos.zoom.coerceIn(15f, 20f)
+            val targetTilt = if (isNavigating) 55f else 0f
             cameraPositionState.position = CameraPosition.Builder()
                 .target(LatLng(currentLoc.latitude, currentLoc.longitude))
-                .zoom(currentPos.zoom.coerceIn(15f, 20f))
+                .zoom(targetZoom)
                 .bearing(animatedBearing)
-                .tilt(0f)
+                .tilt(targetTilt)
                 .build()
         } else {
             // 위치가 아직 없을 때: 기존 중심점 유지 + 앱 방위각
@@ -236,18 +242,42 @@ fun MapScreen(
 
             // ── 코스 Polyline + 번호 마커 ─────────────────────────────────
             selectedCourse?.let { course ->
-                // 전체 waypoint 경로 (경유점 포함)를 한 선으로 연결
+                // 구글맵 네비게이션 표준 색상 (Material Blue 500, Google Maps route blue)
+                val googleRouteBlue = Color(0xFF4285F4)
+                val googleTraveledGray = Color(0xFF9AA0A6)
+
                 val pathPoints = course.waypoints
                     .sortedBy { it.order }
                     .map { LatLng(it.latitude, it.longitude) }
+
+                // 1) 전체 경로 선 — 항상 (preview/navigating 둘 다)
                 if (pathPoints.size >= 2) {
                     Polyline(
                         points = pathPoints,
-                        color = Color(0xFFB8860B),   // 전통 단청 금박색
-                        width = 10f,
+                        color = googleRouteBlue,
+                        width = 14f,
                         jointType = com.google.android.gms.maps.model.JointType.ROUND,
-                        zIndex = 5f
+                        startCap = com.google.android.gms.maps.model.RoundCap(),
+                        endCap = com.google.android.gms.maps.model.RoundCap(),
+                        zIndex = 4f
                     )
+                }
+
+                // 2) 내비게이션 모드: 내 위치에서 다음 웨이포인트까지의 실선 강조
+                if (isNavigating && currentLocation != null && nextWaypointOrder != null) {
+                    val nextWp = course.stops.firstOrNull { it.order == nextWaypointOrder }
+                    if (nextWp != null) {
+                        Polyline(
+                            points = listOf(
+                                LatLng(currentLocation.latitude, currentLocation.longitude),
+                                LatLng(nextWp.latitude, nextWp.longitude)
+                            ),
+                            color = googleRouteBlue,
+                            width = 18f,
+                            jointType = com.google.android.gms.maps.model.JointType.ROUND,
+                            zIndex = 6f
+                        )
+                    }
                 }
                 // 번호 마커: stop waypoint만 표시 (경유점 제외)
                 course.stops.forEach { wp ->
@@ -420,8 +450,11 @@ fun MapScreen(
                 visitedOrders = visitedOrders,
                 nextWaypointOrder = nextWaypointOrder,
                 currentLocation = currentLocation,
+                isNavigating = isNavigating,
                 targetLanguage = targetLanguage,
                 onNavigateToDetail = onNavigateToDetail,
+                onStartNavigation = onStartNavigation,
+                onStopNavigation = onStopNavigation,
                 onStopCourse = {
                     onClearCourse()
                     showWaypointsList = false

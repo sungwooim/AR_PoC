@@ -41,6 +41,15 @@ class TourCourseCoordinator @Inject constructor(
     private val _visitedOrders = MutableStateFlow<Set<Int>>(emptySet())
     val visitedOrders: StateFlow<Set<Int>> = _visitedOrders.asStateFlow()
 
+    /**
+     * 내비게이션 활성 상태.
+     *
+     * - `false` (기본): 코스 **프리뷰** 모드 — 지도에 전체 경로가 표시되지만 따라다니지 않음
+     * - `true`: 내비게이션 **진행** 모드 — 지도 카메라가 사용자 위치를 따라가고 HUD가 다른 화면에도 나타남
+     */
+    private val _isNavigating = MutableStateFlow(false)
+    val isNavigating: StateFlow<Boolean> = _isNavigating.asStateFlow()
+
     /** 선택 가능한 모든 코스 */
     fun getAllCourses(): List<TourCourse> = repository.getCourses()
 
@@ -55,6 +64,17 @@ class TourCourseCoordinator @Inject constructor(
     fun clearSelection() {
         _selectedCourse.value = null
         _visitedOrders.value = emptySet()
+        _isNavigating.value = false
+    }
+
+    /** 내비게이션 시작. 선택된 코스가 있어야만 활성화. */
+    fun startNavigation() {
+        if (_selectedCourse.value != null) _isNavigating.value = true
+    }
+
+    /** 내비게이션만 중지 — 코스는 유지되어 다시 시작 가능. */
+    fun stopNavigation() {
+        _isNavigating.value = false
     }
 
     /**

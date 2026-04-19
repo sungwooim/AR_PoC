@@ -1,14 +1,20 @@
 package com.example.ar_poc
 
 import android.app.Activity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.ar_poc.data.LanguageManager
 import com.example.ar_poc.ui.LanguageSelectionScreen
 import com.example.ar_poc.ui.camera.CameraScreen
+import com.example.ar_poc.ui.navigation.NavigationHud
 import com.example.ar_poc.ui.viewmodel.ARViewModel
 
 sealed class Screen(val route: String) {
@@ -43,6 +49,7 @@ fun NavGraph(
     // CompositionLocalProvider는 제거함:
     // 실제 구글 맵 로케일은 MainActivity.attachBaseContext()가 담당하므로
     // Compose LocalContext 래핑은 불필요하며 Activity.recreate() 충돌을 유발함
+    Box(modifier = Modifier.fillMaxSize()) {
     NavHost(
         navController = navController,
         startDestination = Screen.LanguageSelection.route
@@ -93,6 +100,29 @@ fun NavGraph(
                 onBack = {
                     navController.popBackStack()
                 }
+            )
+        }
+    }
+
+        // ── 전역 내비게이션 HUD 오버레이 ───────────────────────────────
+        // 코스 내비게이션 중이면 어느 화면(카메라/상세)에 있어도 상단에 HUD가 떠 있음
+        val isNavigating by arViewModel.isNavigating.collectAsStateWithLifecycle()
+        val navHudInfo by arViewModel.navHudInfo.collectAsStateWithLifecycle()
+        if (isNavigating && navHudInfo != null) {
+            val info = navHudInfo!!
+            NavigationHud(
+                waypointName = info.waypointName,
+                distanceM = info.distanceM,
+                relativeBearingDeg = info.relativeBearingDeg,
+                targetLanguage = selectedLanguage,
+                onOpenMap = {
+                    // 카메라 화면으로 돌아가기 (AR 오버레이/맵 토글은 사용자가 직접)
+                    navController.navigate(Screen.Camera.route) {
+                        popUpTo(Screen.Camera.route) { inclusive = true }
+                    }
+                },
+                onDismiss = { arViewModel.stopCourseNavigation() },
+                modifier = Modifier.align(Alignment.TopCenter)
             )
         }
     }

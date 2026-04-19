@@ -200,6 +200,7 @@ class ARViewModel @Inject constructor(
     val tourCourses: List<TourCourse> = tourCourseCoordinator.getAllCourses()
     val selectedTourCourse: StateFlow<TourCourse?> = tourCourseCoordinator.selectedCourse
     val visitedWaypointOrders: StateFlow<Set<Int>> = tourCourseCoordinator.visitedOrders
+    val isNavigating: StateFlow<Boolean> = tourCourseCoordinator.isNavigating
 
     /** GPS-driven auto-check + next-waypoint + progress% + completion. */
     private val tourProgress: TourProgressState =
@@ -209,9 +210,46 @@ class ARViewModel @Inject constructor(
     val courseProgressPercent = tourProgress.progressPercent
     val courseCompleted = tourProgress.isCompleted
 
+    /**
+     * 내비게이션 HUD용 다음 웨이포인트 정보.
+     * - 사용자 현위치 → 다음 stop까지 거리(m)와 베어링(절대 방위각, 0=북)
+     * - 현재 폰 방향과의 상대 각도도 함께 제공 (화살표 회전용)
+     */
+    data class NavHudInfo(
+        val waypointName: String,
+        val distanceM: Int,
+        val absoluteBearingDeg: Float,  // 0=북, 90=동
+        val relativeBearingDeg: Float   // 폰이 보는 방향 기준 상대 각도 (0=정면, 음수=왼쪽)
+    )
+
+    val navHudInfo: StateFlow<NavHudInfo?> =
+        kotlinx.coroutines.flow.combine(
+            isNavigating,
+            nextCourseWaypoint,
+            currentLocation,
+            currentAzimuth
+        ) { navigating, wp, loc, az ->
+            if (!navigating || wp == null || loc == null) return@combine null
+            val bearing = com.example.ar_poc.domain.spatial.SpatialCalculator.calcBearing(
+                loc.latitude, loc.longitude, wp.latitude, wp.longitude
+            )
+            val distance = com.example.ar_poc.domain.spatial.SpatialCalculator.calcDistanceM(
+                loc.latitude, loc.longitude, wp.latitude, wp.longitude
+            ).toInt()
+            val relative = (((bearing - az) + 540f) % 360f) - 180f
+            NavHudInfo(
+                waypointName = wp.localizedName(targetLanguage),
+                distanceM = distance,
+                absoluteBearingDeg = bearing,
+                relativeBearingDeg = relative
+            )
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
     fun selectTourCourse(courseId: String) = tourCourseCoordinator.selectCourse(courseId)
     fun clearTourCourse() = tourCourseCoordinator.clearSelection()
     fun toggleWaypointVisited(order: Int) = tourCourseCoordinator.toggleVisited(order)
+    fun startCourseNavigation() = tourCourseCoordinator.startNavigation()
+    fun stopCourseNavigation() = tourCourseCoordinator.stopNavigation()
 
     // ─────────────────────────────────────────────────────────────────────
     // Recognition Flow (ARViewModel 자체 책임 — UI 상태 전이)

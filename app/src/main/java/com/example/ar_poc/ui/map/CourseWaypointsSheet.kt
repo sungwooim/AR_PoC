@@ -53,8 +53,11 @@ fun CourseWaypointsSheet(
     visitedOrders: Set<Int>,
     nextWaypointOrder: Int?,
     currentLocation: Location?,
+    isNavigating: Boolean,
     targetLanguage: String,
     onNavigateToDetail: (heritageId: String, chunkId: String?) -> Unit,
+    onStartNavigation: () -> Unit,
+    onStopNavigation: () -> Unit,
     onStopCourse: () -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -119,6 +122,36 @@ fun CourseWaypointsSheet(
                     color = Color(0xFF90EE90),
                     fontWeight = FontWeight.Bold
                 )
+            }
+
+            // 안내 시작/중지 버튼 — 구글맵 파란색
+            if (!isComplete) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Button(
+                    onClick = {
+                        if (isNavigating) onStopNavigation() else {
+                            onStartNavigation()
+                            onDismiss()   // 내비 시작 시 시트를 닫아 지도 시야 확보
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isNavigating) Color(0xFFEA4335)   // Google Red (stop)
+                        else Color(0xFF4285F4)                                  // Google Blue (start)
+                    ),
+                    shape = RoundedCornerShape(28.dp)
+                ) {
+                    Text(
+                        text = if (isNavigating)
+                            Strings.getStopNavigationLabel(targetLanguage)
+                        else
+                            Strings.getStartNavigationLabel(targetLanguage),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))

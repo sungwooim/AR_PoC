@@ -520,5 +520,33 @@ object Strings {
         "zh" -> "已访问 $done / $total"
         else -> "$done / $total 방문"
     }
+
+    fun getStartNavigationLabel(lang: String): String = when (lang) {
+        "en" -> "▶  Start Navigation"
+        "ja" -> "▶  案内開始"
+        "zh" -> "▶  开始导航"
+        else -> "▶  안내 시작"
+    }
+
+    fun getStopNavigationLabel(lang: String): String = when (lang) {
+        "en" -> "■  Stop Navigation"
+        "ja" -> "■  案内終了"
+        "zh" -> "■  停止导航"
+        else -> "■  안내 중지"
+    }
+
+    fun getNavHudArrived(lang: String): String = when (lang) {
+        "en" -> "You have arrived"
+        "ja" -> "到着しました"
+        "zh" -> "已到达"
+        else -> "도착했습니다"
+    }
+
+    fun getNavHudGoalReached(lang: String, name: String): String = when (lang) {
+        "en" -> "$name reached"
+        "ja" -> "$name に到着"
+        "zh" -> "已到达 $name"
+        else -> "$name 도착"
+    }
 }
 

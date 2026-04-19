@@ -358,6 +358,7 @@ fun CameraScreen(
             val selectedCourse by viewModel.selectedTourCourse.collectAsStateWithLifecycle()
             val visitedOrders by viewModel.visitedWaypointOrders.collectAsStateWithLifecycle()
             val nextWaypoint by viewModel.nextCourseWaypoint.collectAsStateWithLifecycle()
+            val isNavigating by viewModel.isNavigating.collectAsStateWithLifecycle()
             com.example.ar_poc.ui.map.MapScreen(
                 currentLocation = currentLocation,
                 discoveredHeritages = discoveredHeritages,
@@ -368,9 +369,12 @@ fun CameraScreen(
                 selectedCourse = selectedCourse,
                 visitedOrders = visitedOrders,
                 nextWaypointOrder = nextWaypoint?.order,
+                isNavigating = isNavigating,
                 onSelectCourse = { viewModel.selectTourCourse(it) },
                 onClearCourse = { viewModel.clearTourCourse() },
                 onToggleWaypointVisited = { viewModel.toggleWaypointVisited(it) },
+                onStartNavigation = { viewModel.startCourseNavigation() },
+                onStopNavigation = { viewModel.stopCourseNavigation() },
                 onPoiClick = { id -> onNavigateToDetail(id, null) },
                 onNavigateToDetail = { hid, cid -> onNavigateToDetail(hid, cid) },
                 onClose = { viewModel.toggleArOverlay() }
