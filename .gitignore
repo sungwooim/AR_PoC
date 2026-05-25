@@ -38,3 +38,15 @@ dataset/extracted/heritage_pdf_data.json
 **/.DS_Store
 **/.AppleDouble
 **/.LSOverride
+# Claude / VSCode
+.claude/
+.vscode/
+.kotlin/
+
+# Generated outputs
+output/
+3daseet/
+dataset/extracted/
+
+# Local scripts
+sync.sh
