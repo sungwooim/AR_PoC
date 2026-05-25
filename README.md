@@ -3,6 +3,7 @@ AR PoC
 # AR_POC — Gyeongbokgung AR Heritage Docent
 
 짧은 한줄 설명
+Android XR based AI heritage docent platform for Gyeongbokgung Palace with offline vision recognition, AR navigation, multilingual cultural storytelling, and immersive heritage experiences.
 
 스크린샷
 ## Screenshots
